@@ -47,7 +47,6 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.ViewHold
         return data.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView content;
         private GridView images;
