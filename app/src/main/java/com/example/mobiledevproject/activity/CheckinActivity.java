@@ -24,11 +24,13 @@ import androidx.core.content.ContextCompat;
 
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.PhotoAdapter;
+import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.model.MessageBean;
 import com.example.mobiledevproject.util.GlideEngine;
 
 import com.example.mobiledevproject.util.HttpUtil;
 
+import com.example.mobiledevproject.util.Utility;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
@@ -190,16 +192,10 @@ public class CheckinActivity extends AppCompatActivity {
     }
 
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-    public static boolean uploadMessage(MessageBean messageBean,List<String> imagePaths) {
+    public  boolean uploadMessage(MessageBean messageBean,List<String> imagePaths) {
         final boolean[] flag = {false};
         String userId = messageBean.getUserId();
         String content = messageBean.getContent();
-//        RequestBody requestBody = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("", "Square Logo")
-//                .addFormDataPart("image", "logo-square.png",
-//                        RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
-//                .build();
         MultipartBody.Builder builder =  new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         builder.addFormDataPart("uid",messageBean.getUserId());
@@ -207,13 +203,16 @@ public class CheckinActivity extends AppCompatActivity {
         for(String imagePath :imagePaths) {
             builder.addFormDataPart(imagePath, imagePath,
                         RequestBody.create(MEDIA_TYPE_PNG, new File(imagePath)));
-
         }
+
         RequestBody requestBody = builder.build();
 
-
-        String address = "123456";
-        HttpUtil.postOkHttpRequestByForm(address, requestBody, new Callback() {
+        String token = Utility.getData(this, StorageConfig.SP_KEY_TOKEN);
+        String circle_id = "1";
+        String user_id = "9";
+        String address = "http://172.81.215.104/api/v1/circles/"+circle_id+"/members/"+user_id+"/clockin/";
+        
+        HttpUtil.postOkHttpRequestByForm(address, token,requestBody, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 flag[0] = false;
@@ -223,6 +222,7 @@ public class CheckinActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
+                System.out.println(response.body());
 
             }
         });

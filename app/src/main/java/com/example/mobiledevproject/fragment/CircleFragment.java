@@ -13,12 +13,20 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.CircleAdapter;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 import com.example.mobiledevproject.model.UserBean;
+import com.example.mobiledevproject.util.HttpUtil;
+import com.example.mobiledevproject.util.Utility;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+import static com.example.mobiledevproject.config.StorageConfig.SP_KEY_TOKEN;
 
 public class CircleFragment extends Fragment implements GetFragmentInfo {
     Unbinder unbinder;
@@ -67,6 +75,35 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
         checkin.setAdapter(adapterCheckin);
         notCheckin.setAdapter(adapterNotCheckin);
     }
+
+    public List<UserBean> getCheckInformation(String groupId) {
+        String token = Utility.getData(this.getContext(),SP_KEY_TOKEN );
+        String circle_id = "1";
+        String address = "http://172.81.215.104/api/v1/circles/"+circle_id+"/clockin/";
+        final boolean[] flag = {false};
+        HttpUtil.getOkHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                flag[0] = false;
+                System.out.println("获取打卡信息失败");
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                flag[0] = true;
+
+            }
+        });
+        return new ArrayList<>();
+    }
+
+//    public List<UserBean> getCheckInformation() {
+//
+//
+//    }
+
+
+
+
 
     @Override
     public String getTitle(){
