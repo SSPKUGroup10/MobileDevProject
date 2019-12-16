@@ -17,6 +17,20 @@
         />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vgl_0.41"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.41" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vgl_0.44"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.44" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/hgl_0.25"
@@ -44,6 +58,24 @@
         app:layout_constraintGuide_percent="0.95"
         />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/hgl_0.98"
+
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.98"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/vgl_0.90"
+
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.80"
+        />
+
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -53,6 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/hgl_0.05"
         app:layout_constraintBottom_toTopOf="@id/hgl_0.25"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
+        app:layout_constraintRight_toLeftOf="@id/vgl_0.41"
         app:layout_constraintDimensionRatio="1"
         />
 
@@ -64,7 +97,7 @@
 
         android:textSize="30dp"
 
-        app:layout_constraintLeft_toRightOf="@id/iv_checkin_groupicon"
+        app:layout_constraintLeft_toRightOf="@id/vgl_0.44"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         app:layout_constraintTop_toBottomOf="@id/hgl_0.05"
         app:layout_constraintBottom_toTopOf="@id/tv_checkin_membernum"
@@ -76,8 +109,8 @@
         android:id="@+id/tv_checkin_membernum"
         android:text="成员 5人 >"
 
-        app:layout_constraintLeft_toRightOf="@id/iv_checkin_groupicon"
-        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
+        app:layout_constraintLeft_toRightOf="@id/vgl_0.44"
+        app:layout_constraintRight_toLeftOf="@id/btn_joinin"
         app:layout_constraintTop_toBottomOf="@id/tv_checkin_name"
         app:layout_constraintBottom_toTopOf="@id/hgl_0.25"
 
@@ -112,25 +145,29 @@
     <Button
         android:id="@+id/btn_joinin"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="#FFEB3B"
+        android:layout_height="38dp"
+        android:background="@drawable/border_button"
         android:text="加入"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btn_checkin"
+        android:textSize="23sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_checkin_name"
+        app:layout_constraintBottom_toTopOf="@id/hgl_0.25"
+
+        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
          />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_checkin"
+        android:src="@drawable/ic_checkin_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FFEB3B"
-        android:text="打卡"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#FFCA28"
+        android:background="@color/buttonYellow"
+        app:fab_iconSrc="@drawable/ic_checkin_24dp"
+        app:elevation="10dip"
+        app:layout_constraintBottom_toTopOf="@id/hgl_0.98"
         app:layout_constraintLeft_toRightOf="@id/btn_joinin"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/vgl_0.90" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

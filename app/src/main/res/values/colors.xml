@@ -2,11 +2,12 @@
 <resources>
     <color name="colorPrimary">#FFEB3B</color>
     <color name="colorPrimaryDark">#FDD835</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FDD835</color>
     <color name="blue">#42A5F5</color>
     <color name="white">#FFFFFF</color>
     <color name="darkgrey">#424242</color>
-    <color name="buttonYellow">#FFF9C4</color>
+    <color name="lightgrey">#E0E0E0</color>
+    <color name="buttonYellow">#FFE082</color>
     <color name="border_color">#EEEEEE</color>
     <color name="backgroudYellow">#FFFDE7</color>>
 </resources>
