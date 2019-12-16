@@ -99,6 +99,8 @@ public class ListRcvAdapter extends RecyclerView.Adapter<ListRcvAdapter.GroupVie
                                     user.setUserName(cur.get("Username").getAsString());
                                     group.getMemberList().add(user);
                                 }
+
+
                                 Intent intent = new Intent(context, GroupActivity.class);
                                 intent.putExtra("group_info", group);
                                 context.startActivity(intent);

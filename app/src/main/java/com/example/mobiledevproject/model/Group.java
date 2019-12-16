@@ -27,14 +27,24 @@ public class Group implements Serializable {
     @Expose
     private String checkRule;
     @Expose
+    @SerializedName("startAtDesc")
     private String startAt;
 
 
 
     @Expose
+    @SerializedName("endAtDesc")
     private String endAt;
 
-//
+    public boolean containsUser(User user){
+        int userId = user.getUserId();
+        for(User cur: memberList){
+            if(cur.getUserId()==userId){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String getCheckRule() {
         return checkRule;

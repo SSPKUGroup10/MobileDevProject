@@ -14,6 +14,7 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.CircleAdapter;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
+import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.model.UserBean;
 import com.example.mobiledevproject.util.HttpUtil;
 import com.example.mobiledevproject.util.Utility;
@@ -72,19 +73,22 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
         initView(view);
 
 
-        myApp = (MyApp)getActivity().getApplication();
+        myApp = (MyApp) getActivity().getApplication();
 
 
         return view;
     }
 
     public void initView(View view) {
+
         UserBean userBean = new UserBean("001", "德玛西亚", "data");
         List<UserBean> checkinMembers = new ArrayList<>();
         List<UserBean> notCheckinMembers = new ArrayList<>();
-        if(!getCheckInformation("1", checkinMembers, notCheckinMembers)) {
+        if (!getCheckInformation("1", checkinMembers, notCheckinMembers)) {
             return;
         }
+        System.out.println(checkinMembers.size());
+        System.out.println(notCheckinMembers.size());
         CircleAdapter adapterCheckin = new CircleAdapter(getContext(), checkinMembers);
         CircleAdapter adapterNotCheckin = new CircleAdapter(getContext(), notCheckinMembers);
         GridView checkin = view.findViewById(R.id.circle_has_checkin_gv);
@@ -96,82 +100,91 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
 
     public boolean getCheckInformation(String groupId, List<UserBean> checkinMembers, List<UserBean> notCheckinMembers) {
 
-        String circle_id = "1";
+        String circle_id = groupId;
         String address = "http://172.81.215.104/api/v1/circles/" + circle_id + "/clockinMembers/";
         final boolean[] flag = {false};
         //String token = Utility.getData(this, StorageConfig.SP_KEY_TOKEN);
 
         String token = Utility.getData(this.getContext(), SP_KEY_TOKEN);
-        HttpUtil.getRequestWithToken(address, token, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                flag[0] = false;
-                System.out.println("获取打卡信息失败");
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                flag[0] = true;
-
-                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
-                JsonObject data = jsonObject.getAsJsonObject("data");
-
-                JsonArray checkin = data.getAsJsonArray("clockinsMembers");
-                for (int i = 0; i < checkin.size(); ++i) {
-                    JsonObject item = checkin.get(i).getAsJsonObject();
-                    System.out.println(item);
-                    String userId;
-                    if (item.get("userId") == null) {
-                        userId = null;
-                    } else {
-                        userId = item.getAsJsonPrimitive("userId").toString();
-                    }
-                    String username;
-                    if (item.get("username") == null) {
-                        username = null;
-                    } else {
-                        username = item.getAsJsonPrimitive("username").toString();
+                HttpUtil.getRequestWithToken(address, token, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        flag[0] = false;
+                        System.out.println("获取打卡信息失败");
                     }
 
-                    String userAvatar;
-                    System.out.println(item.get("userAvatar"));
-                    if (item.get("userAvatar").isJsonNull()) {
-                        userAvatar = null;
-                    } else {
-                        userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
-                    }
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        flag[0] = true;
 
-                    checkinMembers.add(new UserBean(userId, username, userAvatar));
-                }
+                        JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                        JsonObject data = jsonObject.getAsJsonObject("data");
 
-                JsonArray notCheckin = data.getAsJsonArray("notClockinsMembers");
-                for (int i = 0; i < notCheckin.size(); ++i) {
-                    JsonObject item = notCheckin.get(i).getAsJsonObject();
-                    System.out.println(item);
-                    String userId;
-                    if (item.get("userId") == null) {
-                        userId = null;
-                    } else {
-                        userId = item.getAsJsonPrimitive("userId").toString();
-                    }
-                    String username;
-                    if (item.get("username") == null) {
-                        username = null;
-                    } else {
-                        username = item.getAsJsonPrimitive("username").toString();
-                    }
+                        JsonArray checkin = data.getAsJsonArray("clockinsMembers");
+                        for (int i = 0; i < checkin.size(); ++i) {
+                            JsonObject item = checkin.get(i).getAsJsonObject();
+                            //   System.out.println(item);
+                            String userId;
+                            if (item.get("userId") == null) {
+                                userId = null;
+                            } else {
+                                userId = item.getAsJsonPrimitive("userId").toString();
+                            }
+                            String username;
+                            if (item.get("username") == null) {
+                                username = null;
+                            } else {
+                                username = item.getAsJsonPrimitive("username").toString();
+                            }
 
-                    String userAvatar;
-                    System.out.println(item.get("userAvatar"));
-                    if (item.get("userAvatar").isJsonNull()) {
-                        userAvatar = null;
-                    } else {
-                        userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                            String userAvatar;
+                            //  System.out.println(item.get("userAvatar"));
+                            if (item.get("userAvatar").isJsonNull()) {
+                                userAvatar = null;
+                            } else {
+                                userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                            }
+
+                            checkinMembers.add(new UserBean(userId, username, userAvatar));
+                        }
+
+                        JsonArray notCheckin = data.getAsJsonArray("notClockinsMembers");
+                        for (int i = 0; i < notCheckin.size(); ++i) {
+                            JsonObject item = notCheckin.get(i).getAsJsonObject();
+                            //   System.out.println(item);
+                            String userId;
+                            if (item.get("userId") == null) {
+                                userId = null;
+                            } else {
+                                userId = item.getAsJsonPrimitive("userId").toString();
+                            }
+                            String username;
+                            if (item.get("username") == null) {
+                                username = null;
+                            } else {
+                                username = item.getAsJsonPrimitive("username").toString();
+                            }
+
+                            String userAvatar;
+                            //    System.out.println(item.get("userAvatar"));
+                            if (item.get("userAvatar").isJsonNull()) {
+                                userAvatar = null;
+                            } else {
+                                userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                            }
+                            notCheckinMembers.add(new UserBean(userId, username, userAvatar));
+                        }
                     }
-                    notCheckinMembers.add(new UserBean(userId, username, userAvatar));
-                }
-            }
-        });
+                });
+
+
+        try {
+            Thread.sleep(500);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return flag[0];
     }
 

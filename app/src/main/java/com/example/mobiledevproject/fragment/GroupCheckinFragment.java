@@ -11,11 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.DynamicAdapter;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.MessageBean;
+import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.util.HttpUtil;
 import com.example.mobiledevproject.util.Utility;
 

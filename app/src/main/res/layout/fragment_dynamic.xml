@@ -3,6 +3,10 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:divider="@drawable/divider"
+    android:showDividers="end"
+    android:dividerPadding="1dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -17,10 +21,8 @@
         android:layout_height="wrap_content"
         android:background="#00000000"
         android:columnWidth="90dp"
-        android:gravity="center"
-        android:horizontalSpacing="5dp"
-        android:numColumns="3"
-        android:padding="10dp"
+        android:numColumns="4"
+
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp"
         android:layout_marginTop="5dp"
@@ -29,8 +31,14 @@
         android:id="@+id/dynamic_time_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        tools:text="2019-11-11 20:18"/>
+        android:textSize="12sp"
+        tools:text="2019-11-11 20:18"
+        android:layout_marginTop="8dp"/>
+
+
+
+
+
 
 
 </LinearLayout>
