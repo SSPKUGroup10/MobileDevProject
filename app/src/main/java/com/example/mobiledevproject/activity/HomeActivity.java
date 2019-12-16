@@ -14,33 +14,19 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.BodyVpAdapter;
-import com.example.mobiledevproject.config.API;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.fragment.ExploreFragment;
 import com.example.mobiledevproject.fragment.HomeFragment;
 import com.example.mobiledevproject.fragment.MyFragment;
-import com.example.mobiledevproject.model.GroupCreate;
 import com.example.mobiledevproject.model.User;
-import com.example.mobiledevproject.model.UserCreate;
-import com.example.mobiledevproject.util.HttpUtil;
-import com.example.mobiledevproject.util.StatusCodeUtil;
 import com.example.mobiledevproject.util.Utility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -101,8 +87,6 @@ public class HomeActivity extends AppCompatActivity {
         StorageConfig.SP_NAME = user.getUserName();
         String token = intent.getStringExtra("token");
 
-        refreshCircleInfo();
-
         app.setUser(user);
         app.setToken(token);
         //  配置当前用户专用文件
@@ -111,85 +95,6 @@ public class HomeActivity extends AppCompatActivity {
         Utility.setDataList(HomeActivity.this, SP_GROUP_LIST_KEY, user.getJoinedCircles());
     }
 
-    private void refreshCircleInfo(){
-
-        UserCreate info = new UserCreate(user);
-        //上传json格式数据
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonInfo = gson.toJson(info);
-        HttpUtil.postOkHttpRequest(API.LOGIN, jsonInfo, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                Log.i(TAG, "onFailure: 网络请求错误");
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseBody = response.body().string();
-                Log.i(TAG, "onResponse: " + responseBody);
-
-                JsonObject jsonObject;
-                if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
-                    int status = jsonObject.get("status").getAsInt();
-                    if (StatusCodeUtil.isNormalStatus(status)) {
-                        //  正确
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //登录成功后跳转到HomeActivity，通过intent把user和token的信息传过来，user用类传递，token用string
-                                JsonObject data = jsonObject.get("data").getAsJsonObject();
-                                String token = data.get("accessToken").getAsString();
-                                int userID = data.get("userID").getAsInt();
-
-                                info.setUserId(userID);
-                                User newUser = new User(info);
-
-                                JsonArray joinedCircles = data.get("joinedCircles").getAsJsonArray();
-                                JsonArray otherCircles = data.get("otherCircles").getAsJsonArray();
-
-                                for(JsonElement group : joinedCircles){
-                                    JsonObject cur = group.getAsJsonObject();
-                                    GroupCreate createdGroup = new GroupCreate();
-                                    createdGroup.setGroupName(cur.get("name").getAsString());
-                                    createdGroup.setDescription(cur.get("desc").getAsString());
-                                    createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-                                    createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-                                    createdGroup.setStartAt(cur.get("startAt").getAsString());
-                                    createdGroup.setEndAt(cur.get("endAt").getAsString());
-                                    createdGroup.setType(cur.get("type").getAsString());
-                                    createdGroup.setGroupId(cur.get("id").getAsInt());
-                                    newUser.getJoinedCircles().add(createdGroup);
-                                }
-
-                                for(JsonElement group : otherCircles){
-                                    JsonObject cur = group.getAsJsonObject();
-                                    GroupCreate createdGroup = new GroupCreate();
-                                    createdGroup.setGroupName(cur.get("name").getAsString());
-                                    createdGroup.setDescription(cur.get("desc").getAsString());
-                                    createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-                                    createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-                                    createdGroup.setStartAt(cur.get("startAt").getAsString());
-                                    createdGroup.setEndAt(cur.get("endAt").getAsString());
-                                    createdGroup.setType(cur.get("type").getAsString());
-                                    createdGroup.setGroupId(cur.get("id").getAsInt());
-                                    newUser.getOtherCircles().add(createdGroup);
-//                                            Utility.setData(HomeActivity.this, StorageConfig.SP_KEY_TOKEN, token);
-                                }
-
-                                Log.i(TAG, "run: "+newUser.toString());
-                                user = newUser;
-                            }
-                        });
-                    } else {
-                        Log.i(TAG, "onResponse: " + status);
-                    }
-                } else {
-                    Log.i(TAG, "onResponse: 响应内容错误");
-                }
-            }
-        });
-
-    }
 
     private void viewPagerInit() {
         //  配置各个选项卡对应的fragment
