@@ -16,13 +16,12 @@
         />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hgl_0.25"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/hgl_0.25"
 
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25"
-        />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
@@ -33,6 +32,14 @@
         app:layout_constraintGuide_percent="0.55"
         />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/vgl_0.75"
+
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45"
+        />
     <!--margin left-->
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
@@ -71,7 +78,7 @@
         android:gravity="left"
         android:textSize="28dp"
 
-        app:layout_constraintLeft_toRightOf="@id/iv_my_userimage"
+        app:layout_constraintLeft_toRightOf="@id/vgl_0.75"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         app:layout_constraintTop_toBottomOf="@id/hgl_0.05"
         app:layout_constraintBottom_toTopOf="@id/tv_my_userdescription"
@@ -83,7 +90,7 @@
         android:id="@+id/tv_my_userdescription"
         android:text="个性签名"
         android:gravity="left"
-        app:layout_constraintLeft_toRightOf="@id/iv_my_userimage"
+        app:layout_constraintLeft_toRightOf="@+id/vgl_0.75"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         app:layout_constraintTop_toBottomOf="@id/tv_my_username"
         app:layout_constraintBottom_toTopOf="@id/hgl_0.25"
@@ -91,26 +98,28 @@
         />
 
     <TextView
+        android:id="@+id/tv_my_userinfo"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/edittext_height"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="@dimen/item_interval"
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
         android:drawablePadding="10dp"
-        android:text="个人资料"
-        android:textSize="@dimen/item_manage_textsize"
         android:gravity="center_vertical"
-        android:id="@+id/tv_my_userinfo"
+        android:text="个人资料"
 
-        android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@id/iv_my_userimage"
+        android:textSize="@dimen/item_manage_textsize"
         app:layout_constraintBottom_toTopOf="@id/tv_my_usergroup"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-        app:layout_constraintVertical_chainStyle="spread"
-        />
+        app:layout_constraintTop_toBottomOf="@id/iv_my_userimage"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/edittext_height"
+        android:layout_marginBottom="@dimen/item_interval"
         android:drawableLeft="@drawable/ic_settings_black_24dp"
         android:drawablePadding="10dp"
         android:text="我的圈子"
@@ -126,7 +135,8 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/edittext_height"
+        android:layout_marginBottom="@dimen/item_interval"
         android:drawableLeft="@drawable/ic_group_add_black_24dp"
         android:drawablePadding="10dp"
         android:text="更多设置"
@@ -143,7 +153,8 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/edittext_height"
+        android:layout_marginBottom="@dimen/item_interval"
         android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
         android:drawablePadding="10dp"
         android:text="意见反馈"

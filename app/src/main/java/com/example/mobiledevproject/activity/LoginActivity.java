@@ -147,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                                             createdGroup.setStartAt(cur.get("startAt").getAsString());
                                             createdGroup.setEndAt(cur.get("endAt").getAsString());
                                             createdGroup.setType(cur.get("type").getAsString());
+                                            createdGroup.setGroupId(cur.get("id").getAsInt());
                                             user.getJoinedCircles().add(createdGroup);
 
                                         }
@@ -162,6 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                                             createdGroup.setStartAt(cur.get("startAt").getAsString());
                                             createdGroup.setEndAt(cur.get("endAt").getAsString());
                                             createdGroup.setType(cur.get("type").getAsString());
+                                            createdGroup.setGroupId(cur.get("id").getAsInt());
                                             user.getOtherCircles().add(createdGroup);
                                         }
 

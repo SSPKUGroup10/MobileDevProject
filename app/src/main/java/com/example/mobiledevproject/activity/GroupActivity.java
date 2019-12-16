@@ -25,9 +25,13 @@ import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.util.HttpUtil;
+import com.example.mobiledevproject.util.StatusCodeUtil;
 import com.example.mobiledevproject.util.Utility;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 
 import java.text.SimpleDateFormat;
@@ -67,11 +71,8 @@ public class GroupActivity extends AppCompatActivity {
     static final String STATE_GROUP = "cur_group";
     static final String STATE_USER = "cur_user";
 
-    //    @AutoRestore
     public Group group;
-    //    @AutoRestore
     public User user;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,36 +81,27 @@ public class GroupActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         MyApp app = (MyApp) getApplication();
         user = app.getUser();
-
-//        if(savedInstanceState!=null){
-//            Log.i(TAG, "onCreate: 已经重新加载");
-//            group = (Group)savedInstanceState.getSerializable(STATE_GROUP);
-////            user = (User)savedInstanceState.getSerializable(STATE_USER);
-//        } else {
-//            Log.i(TAG, "onCreate: 需要重新初始化");
         groupInit();
-//        }
-
         viewPagerInit();
         tabInit();
 
         //  判断是否加入
-        joinState();
-
         Log.i(TAG, "onCreate: " + user.toString());
     }
 
-    private void joinState(){
+    private boolean joinState(){
+
         if(group.containsUser(user)){
-            hasJoined();
+            return true;
         } else {
-            hasNotJoined();
+            return false;
         }
     }
 
     private void hasJoined(){
         Log.i(TAG, "hasJoined: 已加入");
         btnJoinin.setText("已加入");
+//        contentFresh();
         checkinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,25 +121,29 @@ public class GroupActivity extends AppCompatActivity {
 
     private void hasNotJoined(){
         Log.i(TAG, "hasNotJoined: 未加入");
+
         btnJoinin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String token = Utility.getData(GroupActivity.this, StorageConfig.SP_KEY_TOKEN);
                 int groupId = group.getGroupId();
                 String url = API.CIRCLE+groupId+"/members/";
+                Log.i(TAG, "onClick: "+url);
 
-                HttpUtil.postRequestWithToken(url, "", token, new Callback() {
+                HttpUtil.postRequestWithToken2(url, token, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
                     }
-
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
+                        String responseBody = response.body().string();
+
+                        Log.i(TAG, "onResponse: 点击加入之后"+responseBody);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                hasJoined();
+//                                hasJoined();
+                                contentFresh();
                             }
                         });
                     }
@@ -193,7 +189,72 @@ public class GroupActivity extends AppCompatActivity {
     private void groupInit() {
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra("group_info");
-        viewSetInfo(group);
+        nameTv.setText(group.getGroupName());
+
+        Log.i(TAG, "groupInit: groupid="+group.getGroupId());
+
+        contentFresh();
+//        Log.i(TAG, "groupInit: 成员人数"+group.getMemberList().size());
+    }
+
+    private void contentFresh(){
+        int groupId = group.getGroupId();
+//        int userId = user.getUserId();
+
+        if(joinState()){
+            viewSetInfo();
+            return;
+        }
+
+        String token = Utility.getData(GroupActivity.this, StorageConfig.SP_KEY_TOKEN);
+        String url = API.CIRCLE+groupId+"/members/";
+
+        Log.i(TAG, "contentFresh: "+url);
+        HttpUtil.getRequestWithToken(url, token, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string();
+                Log.i(TAG, "onResponse: "+responseBody);
+                JsonObject jsonObject;
+                if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
+                    int status = jsonObject.get("status").getAsInt();
+                    if (StatusCodeUtil.isNormalStatus(status)) {
+                        //  正确
+                        List<User> members = new ArrayList<>();
+                        JsonArray data = jsonObject.get("data").getAsJsonArray();
+                        for(JsonElement member:data){
+                            JsonObject cur = member.getAsJsonObject();
+                            User user = new User();
+                            user.setUserId(cur.get("UserID").getAsInt());
+                            user.setUserName(cur.get("Username").getAsString());
+                            members.add(user);
+                        }
+                        Log.i(TAG, "onResponse: 小组成员更新");
+                        Log.i(TAG, "onResponse: 成员人数"+members.size());
+                        group.setMemberList(members);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                viewSetInfo();
+                                if(joinState()){
+                                    hasJoined();
+                                } else {
+                                    hasNotJoined();
+                                }
+                            }
+                        });
+                    } else {
+                        Log.i(TAG, "onResponse: " + status);
+                    }
+                } else {
+                    Log.i(TAG, "onResponse: 响应内容错误");
+                }
+            }
+        });
     }
 
 
@@ -209,21 +270,11 @@ public class GroupActivity extends AppCompatActivity {
     private void tabInit() {
         funcsTl.setupWithViewPager(contentsVp);
     }
-//    private void intentReceived() {
-//
-//    }
 
-    private void viewSetInfo(Group group) {
+    private void viewSetInfo() {
 
-        nameTv.setText(group.getGroupName());
-
-//        nameTv.setText("aa");
-        //  此处成员数据要通过数据库读取
+        Log.i(TAG, "viewSetInfo: 成员" + group.getMemberList().size() + "人");
         memberNumTv.setText("成员" + group.getMemberList().size() + "人");
-
-        //  此处小组头像要通过数据库读取
-//        groupIconIv.setImageResource();
-
     }
 
 //    @Override
@@ -235,4 +286,5 @@ public class GroupActivity extends AppCompatActivity {
 //        savedInstanceState.putSerializable(STATE_GROUP, group);
 //        savedInstanceState.putSerializable(STATE_USER, user);
 //    }
+
 }

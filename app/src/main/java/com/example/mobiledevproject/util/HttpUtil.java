@@ -71,6 +71,16 @@ public class HttpUtil {
         okHttpClient.newCall(request).enqueue(callback);
     }
 
+    public static void postRequestWithToken2(String address, String token, Callback callback){
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(null, "");
+        Request request = new Request.Builder().url(address)
+                .addHeader(WebConfig.TOKEN_KEY, WebConfig.TOKEN_VALUE_PRE+token)
+                .post(requestBody)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+
 
     public static void getToken(UserCreate user, Handler handler){
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();

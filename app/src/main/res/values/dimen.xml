@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="item_manage_textsize">22dp</dimen>
-    <dimen name="item_interval_text">15dp</dimen>
+    <dimen name="item_manage_textsize">26dp</dimen>
+    <dimen name="item_interval_text">8dp</dimen>
     <dimen name="item_my_textsize">25dp</dimen>
     <dimen name="item_intro_label_textsize">15dp</dimen>
     <dimen name="item_intro_content_textsize">25dp</dimen>
     <dimen name="btn_between">20dp</dimen>
     <dimen name="edittext_height">48dp</dimen>
     <dimen name="corner_radius">10dp</dimen>
+    <dimen name="item_interval">20dp</dimen>
 
 </resources>

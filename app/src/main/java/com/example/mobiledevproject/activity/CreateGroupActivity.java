@@ -122,7 +122,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         Log.i(TAG, "onClick: " + hourOfDay);
                         Log.i(TAG, "onClick: " + minute);
-                        tvCgEndat.setText(hourOfDay + ":" + minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        tvCgStartat.setText(sdf.format(calendar.getTime()));
                     }
                 }, hour, minute, true).show();
             }
@@ -220,11 +222,11 @@ public class CreateGroupActivity extends AppCompatActivity {
         groupCreate.setDescription(etCgDescription.getText().toString());
         groupCreate.setCheckRule(etCgRule.getText().toString());
         //  静态数据
-        groupCreate.setStartAt("2020-10-24 11:11:11");
-        groupCreate.setEndAt("2020-10-24 11:11:11");
+//        groupCreate.setStartAt("2020-10-24 11:11:11");
+//        groupCreate.setEndAt("2020-10-24 11:11:11");
 
-//        groupCreate.setStartAt(tvCgStartat.getText().toString());
-//        groupCreate.setEndAt(tvCgEndat.getText().toString());
+        groupCreate.setStartAt(tvCgStartat.getText().toString());
+        groupCreate.setEndAt(tvCgEndat.getText().toString());
         return groupCreate;
     }
 
