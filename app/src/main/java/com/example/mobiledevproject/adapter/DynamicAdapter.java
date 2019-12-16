@@ -42,13 +42,19 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.ViewHold
         //首先本地获取，本地获取失败从网上获取  。。逻辑不对之后再改
         List<String> localImagePaths = messageList.get(position).getLocalImagePath();
         List<String> onlineImagePaths = messageList.get(position).getOnlineImagePath();
-        List<String> imagePaths = localImagePaths;
+        List<String> imagePaths;
         imagePaths = messageList.get(position).getLocalImagePath();
         for(int i = 0;onlineImagePaths != null && i < imagePaths.size() - 1;++i) {
             if(!new File(imagePaths.get(i)).exists())
                 imagePaths.set(i,onlineImagePaths.get(i));
         }
+        System.out.println("--------------------");
+        System.out.println(imagePaths.size());
+        if(imagePaths.size() == 0) {
+            imagePaths = messageList.get(position).getOnlineImagePath();
 
+
+        }
         photoAdapter = new PhotoAdapter(this.context,imagePaths);
         viewHolder.images.setAdapter(photoAdapter);
 

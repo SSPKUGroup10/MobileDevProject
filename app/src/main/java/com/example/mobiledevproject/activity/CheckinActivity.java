@@ -96,7 +96,7 @@ public class CheckinActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userId = "0011";
+                String userId = "00009";
                 String content = contentET.getText().toString();
                 imagePath.remove("PHOTO_TAKING");
                 List<String> localImages = new ArrayList<>();
@@ -114,7 +114,8 @@ public class CheckinActivity extends AppCompatActivity {
                         Toast.makeText(v.getContext(),"图片上传失败",Toast.LENGTH_SHORT);
                         return;
                     }
-
+                    System.out.println("000000000000000000000000000000");
+                    System.out.println(messageBean.getOnlineImagePath().size());
                     String path = userId;
                     try {
                         List<MessageBean> messageBeanList;

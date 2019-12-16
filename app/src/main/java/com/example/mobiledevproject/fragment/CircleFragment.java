@@ -82,8 +82,9 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
         UserBean userBean = new UserBean("001", "德玛西亚", "data");
         List<UserBean> checkinMembers = new ArrayList<>();
         List<UserBean> notCheckinMembers = new ArrayList<>();
-        getCheckInformation("1", checkinMembers, notCheckinMembers);
-
+        if(!getCheckInformation("1", checkinMembers, notCheckinMembers)) {
+            return;
+        }
         CircleAdapter adapterCheckin = new CircleAdapter(getContext(), checkinMembers);
         CircleAdapter adapterNotCheckin = new CircleAdapter(getContext(), notCheckinMembers);
         GridView checkin = view.findViewById(R.id.circle_has_checkin_gv);
@@ -169,11 +170,6 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
                     }
                     notCheckinMembers.add(new UserBean(userId, username, userAvatar));
                 }
-
-
-                System.out.println("---------------------------------------------");
-                System.out.println(response.body().string());
-
             }
         });
         return flag[0];

@@ -93,9 +93,8 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
                 FileInputStream fileInputStream = getContext().openFileInput(path);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 dynamicData = (ArrayList)objectInputStream.readObject();
-
+                System.out.println("*************************************2");
                 System.out.println(dynamicData.size());
-                List<String> data = null;
 
                 fileInputStream.close();
                 objectInputStream.close();

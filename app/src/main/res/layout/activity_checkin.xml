@@ -77,7 +77,7 @@
         />
     <GridView
         android:id="@+id/checkin_image_gv"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:columnWidth="90dp"
