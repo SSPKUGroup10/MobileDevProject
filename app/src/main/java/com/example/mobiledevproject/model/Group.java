@@ -28,6 +28,9 @@ public class Group implements Serializable {
     private String checkRule;
     @Expose
     private String startAt;
+
+
+
     @Expose
     private String endAt;
 
@@ -122,5 +125,20 @@ public class Group implements Serializable {
 
     public void setcheckRule(String checkRule) {
         this.checkRule = checkRule;
+    }
+    public String getStartAt() {
+        return startAt;
+    }
+
+    public void setStartAt(String startAt) {
+        this.startAt = startAt;
+    }
+
+    public String getEndAt() {
+        return endAt;
+    }
+
+    public void setEndAt(String endAt) {
+        this.endAt = endAt;
     }
 }
