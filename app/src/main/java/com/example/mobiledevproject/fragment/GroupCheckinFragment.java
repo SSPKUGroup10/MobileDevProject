@@ -78,14 +78,16 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
 
             String AbsolutePath= getContext().getFilesDir().toString();
             File file = new File(AbsolutePath +"/" + path);
-            System.out.println(file.exists());
+          //  System.out.println(file.exists());
             if (file.exists()) {
                 List<MessageBean> dynamicData;
                 FileInputStream fileInputStream = getContext().openFileInput(path);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 dynamicData = (ArrayList)objectInputStream.readObject();
+
                 System.out.println(dynamicData.size());
                 List<String> data = null;
+
                 fileInputStream.close();
                 objectInputStream.close();
 
@@ -98,7 +100,13 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
+
+//    public List<String> downloadMessageBean(String uid) {
+//        String address =
+//
+//
+//
+//    }
+
 }

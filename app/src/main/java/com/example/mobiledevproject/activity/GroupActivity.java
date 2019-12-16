@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -23,7 +24,9 @@ import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.User;
 import com.google.android.material.tabs.TabLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,11 +72,48 @@ public class GroupActivity extends AppCompatActivity {
         checkinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GroupActivity.this, CheckinActivity.class);
-                startActivity(intent);
+                if(canCheckin()) {
+                    Intent intent = new Intent(GroupActivity.this, CheckinActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(v.getContext(),"不在该圈子打卡时间内",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
+    }
+
+    public boolean canCheckin() {
+        String beginTime = "8:00";
+        String endTime = "8:20";
+        //current time
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm");
+        String currentTime = dateFormat.format(date);
+
+        System.out.println(beginTime);
+        System.out.println(endTime);
+        System.out.println(currentTime);
+
+        int beginTimeHour = Integer.parseInt(beginTime.split(":")[0]);
+        int beginTimeMinute = Integer.parseInt(beginTime.split(":")[1]);
+        int endTimeHour = Integer.parseInt(endTime.split(":")[0]);
+        int endTimeMinute = Integer.parseInt(endTime.split(":")[1]);
+        int currentTimeHour = Integer.parseInt(currentTime.split(":")[0]);
+        int currentTimeMinute = Integer.parseInt(currentTime.split(":")[1]);
+
+        if (beginTimeHour <= currentTimeHour && currentTimeHour <= endTimeHour) {
+            if (currentTimeHour == endTimeHour) {
+                if (currentTimeMinute <= endTimeMinute)
+                    return true;
+                else
+                    return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
 

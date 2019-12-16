@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +26,9 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.PhotoAdapter;
 import com.example.mobiledevproject.model.MessageBean;
 import com.example.mobiledevproject.util.GlideEngine;
+
+import com.example.mobiledevproject.util.HttpUtil;
+
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
@@ -37,6 +43,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class CheckinActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_CODE = 10;
@@ -80,6 +93,12 @@ public class CheckinActivity extends AppCompatActivity {
                     SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd hh:mm");
                     String time = dateFormat.format(date);
                     messageBean =  new MessageBean(userId,content,localImages,onlineImages,time);
+                    //上传失败时重新报错
+                    if(!uploadMessage(messageBean,messageBean.getOnlineImagePath())) {
+                        Toast.makeText(v.getContext(),"图片上传失败",Toast.LENGTH_SHORT);
+                        return;
+                    }
+
                     String path = userId;
                     try {
                         List<MessageBean> messageBeanList;
@@ -170,8 +189,45 @@ public class CheckinActivity extends AppCompatActivity {
         }
     }
 
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    public static boolean uploadMessage(MessageBean messageBean,List<String> imagePaths) {
+        final boolean[] flag = {false};
+        String userId = messageBean.getUserId();
+        String content = messageBean.getContent();
+//        RequestBody requestBody = new MultipartBody.Builder()
+//                .setType(MultipartBody.FORM)
+//                .addFormDataPart("", "Square Logo")
+//                .addFormDataPart("image", "logo-square.png",
+//                        RequestBody.create(MEDIA_TYPE_PNG, new File("website/static/logo-square.png")))
+//                .build();
+        MultipartBody.Builder builder =  new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        builder.addFormDataPart("uid",messageBean.getUserId());
+        builder.addFormDataPart("content",messageBean.getContent());
+        for(String imagePath :imagePaths) {
+            builder.addFormDataPart(imagePath, imagePath,
+                        RequestBody.create(MEDIA_TYPE_PNG, new File(imagePath)));
+
+        }
+        RequestBody requestBody = builder.build();
 
 
+        String address = "123456";
+        HttpUtil.postOkHttpRequestByForm(address, requestBody, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                flag[0] = false;
+                System.out.println("上传图片失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                flag[0] = true;
+
+            }
+        });
+        return flag[0];
+    }
 
 
 
