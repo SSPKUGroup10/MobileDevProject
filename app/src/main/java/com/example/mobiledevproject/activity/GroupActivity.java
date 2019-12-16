@@ -72,12 +72,14 @@ public class GroupActivity extends AppCompatActivity {
         checkinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(canCheckin()) {
+             //   if(canCheckin()) {
+
                     Intent intent = new Intent(GroupActivity.this, CheckinActivity.class);
+                    intent.putExtra("group",group);
                     startActivity(intent);
-                }else{
-                    Toast.makeText(v.getContext(),"不在该圈子打卡时间内",Toast.LENGTH_SHORT).show();
-                }
+//                }else{
+//                    Toast.makeText(v.getContext(),"不在该圈子打卡时间内",Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 

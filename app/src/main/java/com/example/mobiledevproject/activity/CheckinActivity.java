@@ -22,17 +22,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.PhotoAdapter;
 import com.example.mobiledevproject.config.StorageConfig;
+import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.MessageBean;
+import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.util.GlideEngine;
 
 import com.example.mobiledevproject.util.HttpUtil;
 
 import com.example.mobiledevproject.util.Utility;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -85,8 +92,8 @@ public class CheckinActivity extends AppCompatActivity {
                 String userId = "0011";
                 String content = contentET.getText().toString();
                 imagePath.remove("PHOTO_TAKING");
-                List<String> localImages = imagePath;
-                List<String> onlineImages = null;
+                List<String> localImages = new ArrayList<>();
+                List<String> onlineImages = new ArrayList<>();
                 if (content == null && localImages == null) {
 
                 } else {
@@ -194,38 +201,55 @@ public class CheckinActivity extends AppCompatActivity {
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     public  boolean uploadMessage(MessageBean messageBean,List<String> imagePaths) {
         final boolean[] flag = {false};
+
         String userId = messageBean.getUserId();
         String content = messageBean.getContent();
         MultipartBody.Builder builder =  new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
-        builder.addFormDataPart("uid",messageBean.getUserId());
-        builder.addFormDataPart("content",messageBean.getContent());
-        for(String imagePath :imagePaths) {
-            builder.addFormDataPart(imagePath, imagePath,
+        builder.addFormDataPart("line",messageBean.getContent());
+        for(String imagePath :imagePath) {
+            builder.addFormDataPart("picture", "picture",
                         RequestBody.create(MEDIA_TYPE_PNG, new File(imagePath)));
         }
-
         RequestBody requestBody = builder.build();
-
         String token = Utility.getData(this, StorageConfig.SP_KEY_TOKEN);
-        String circle_id = "1";
-        String user_id = "9";
-        String address = "http://172.81.215.104/api/v1/circles/"+circle_id+"/members/"+user_id+"/clockin/";
-        
-        HttpUtil.postOkHttpRequestByForm(address, token,requestBody, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                flag[0] = false;
-                System.out.println("上传图片失败");
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                flag[0] = true;
-                System.out.println(response.body());
+        MyApp app = (MyApp)getApplication();
+        User user = app.getUser();
+        //Group group = (Group) this.getIntent().getCharSequenceExtra("group");
 
+        String address = "http://172.81.215.104/api/v1/circles/"+ "1" +"/members/"+ "1" +"/clockin/";
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpUtil.postOkHttpRequestByForm(address, token,requestBody, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        flag[0] = false;
+                        System.out.println("上传图片失败");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        flag[0] = true;
+                        JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                        String picture = jsonObject.getAsJsonObject("data").get("picture").getAsString();
+                        System.out.println(picture);
+                        imagePaths.add(picture);
+                    }
+                });
             }
         });
+
+        thread.start();
+
+        try {
+            Thread.sleep(1000);
+            thread.join();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println(flag[0]);
         return flag[0];
     }
 

@@ -63,7 +63,8 @@ public class CircleAdapter extends BaseAdapter {
                 .error(R.drawable.ic_circle_panda_24dp);
 
         Glide.with(context)
-                .load(data.get(position).getImagePath())
+               // .load(data.get(position).getImagePath())
+                .load(R.drawable.ic_circle_panda_24dp)
                 .apply(options)
                 .into(viewHolder.imageView);
         return convertView;

@@ -64,6 +64,7 @@ public class HttpUtil {
     public static void postOkHttpRequestByForm(String address,String token, RequestBody requestBody, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(address)
+                .addHeader("Content-Type", "multipart/form-data")
                 .addHeader(WebConfig.TOKEN_KEY, WebConfig.TOKEN_VALUE_PRE+token)
                 .post(requestBody)
                 .build();

@@ -82,7 +82,7 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
     }
 
     private void initDynamic(View view) {
-        String path = "0011";
+        String path = "00009";
         try {
             System.out.println();
             String AbsolutePath= getContext().getFilesDir().toString();
@@ -109,26 +109,6 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean downloadMessageBean(String uid,List<String> onlineImagePaths) {
-        String token = Utility.getData(this.getContext(),SP_KEY_TOKEN );
-        String circle_id = "1";
-        String address = "http://172.81.215.104/api/v1/circles/"+circle_id+"/clockin/";
-        final boolean[] flag = {false};
-        HttpUtil.getOkHttpRequest(address, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                flag[0] = false;
-                System.out.println("读取图片失败");
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                flag[0] = true;
-
-            }
-        });
-        return flag[0];
     }
 
 }

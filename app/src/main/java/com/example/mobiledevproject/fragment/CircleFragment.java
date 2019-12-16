@@ -11,13 +11,22 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.CircleAdapter;
+import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 import com.example.mobiledevproject.model.UserBean;
 import com.example.mobiledevproject.util.HttpUtil;
 import com.example.mobiledevproject.util.Utility;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -65,48 +74,109 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
     }
 
     public void initView(View view) {
-        UserBean userBean = new UserBean("001","德玛西亚","data");
-        List<UserBean> data = new ArrayList<>();
-        data.add(userBean);
-        CircleAdapter adapterCheckin = new CircleAdapter(getContext(),data);
-        CircleAdapter adapterNotCheckin = new CircleAdapter(getContext(),data);
+        UserBean userBean = new UserBean("001", "德玛西亚", "data");
+        List<UserBean> checkinMembers = new ArrayList<>();
+        List<UserBean> notCheckinMembers = new ArrayList<>();
+        getCheckInformation("1", checkinMembers, notCheckinMembers);
+
+        CircleAdapter adapterCheckin = new CircleAdapter(getContext(), checkinMembers);
+        CircleAdapter adapterNotCheckin = new CircleAdapter(getContext(), notCheckinMembers);
         GridView checkin = view.findViewById(R.id.circle_has_checkin_gv);
         GridView notCheckin = view.findViewById(R.id.circle_hasnot_checkin_gv);
         checkin.setAdapter(adapterCheckin);
         notCheckin.setAdapter(adapterNotCheckin);
+
     }
 
-    public List<UserBean> getCheckInformation(String groupId) {
-        String token = Utility.getData(this.getContext(),SP_KEY_TOKEN );
+    public boolean getCheckInformation(String groupId, List<UserBean> checkinMembers, List<UserBean> notCheckinMembers) {
+
         String circle_id = "1";
-        String address = "http://172.81.215.104/api/v1/circles/"+circle_id+"/clockin/";
+        String address = "http://172.81.215.104/api/v1/circles/" + circle_id + "/clockinMembers/";
         final boolean[] flag = {false};
-        HttpUtil.getOkHttpRequest(address, new Callback() {
+        //String token = Utility.getData(this, StorageConfig.SP_KEY_TOKEN);
+
+        String token = Utility.getData(this.getContext(), SP_KEY_TOKEN);
+        HttpUtil.getRequestWithToken(address, token, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 flag[0] = false;
                 System.out.println("获取打卡信息失败");
             }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
 
+                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                JsonObject data = jsonObject.getAsJsonObject("data");
+
+                JsonArray checkin = data.getAsJsonArray("clockinsMembers");
+                for (int i = 0; i < checkin.size(); ++i) {
+                    JsonObject item = checkin.get(i).getAsJsonObject();
+                    System.out.println(item);
+                    String userId;
+                    if (item.get("userId") == null) {
+                        userId = null;
+                    } else {
+                        userId = item.getAsJsonPrimitive("userId").toString();
+                    }
+                    String username;
+                    if (item.get("username") == null) {
+                        username = null;
+                    } else {
+                        username = item.getAsJsonPrimitive("username").toString();
+                    }
+
+                    String userAvatar;
+                    System.out.println(item.get("userAvatar"));
+                    if (item.get("userAvatar").isJsonNull()) {
+                        userAvatar = null;
+                    } else {
+                        userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                    }
+
+                    checkinMembers.add(new UserBean(userId, username, userAvatar));
+                }
+
+                JsonArray notCheckin = data.getAsJsonArray("notClockinsMembers");
+                for (int i = 0; i < notCheckin.size(); ++i) {
+                    JsonObject item = notCheckin.get(i).getAsJsonObject();
+                    System.out.println(item);
+                    String userId;
+                    if (item.get("userId") == null) {
+                        userId = null;
+                    } else {
+                        userId = item.getAsJsonPrimitive("userId").toString();
+                    }
+                    String username;
+                    if (item.get("username") == null) {
+                        username = null;
+                    } else {
+                        username = item.getAsJsonPrimitive("username").toString();
+                    }
+
+                    String userAvatar;
+                    System.out.println(item.get("userAvatar"));
+                    if (item.get("userAvatar").isJsonNull()) {
+                        userAvatar = null;
+                    } else {
+                        userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                    }
+                    notCheckinMembers.add(new UserBean(userId, username, userAvatar));
+                }
+
+
+                System.out.println("---------------------------------------------");
+                System.out.println(response.body().string());
+
             }
         });
-        return new ArrayList<>();
+        return flag[0];
     }
-
-//    public List<UserBean> getCheckInformation() {
-//
-//
-//    }
-
-
-
 
 
     @Override
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 
