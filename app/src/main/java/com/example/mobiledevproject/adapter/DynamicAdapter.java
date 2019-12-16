@@ -53,7 +53,6 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.ViewHold
         if(imagePaths.size() == 0) {
             imagePaths = messageList.get(position).getOnlineImagePath();
 
-
         }
         photoAdapter = new PhotoAdapter(this.context,imagePaths);
         viewHolder.images.setAdapter(photoAdapter);

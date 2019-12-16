@@ -85,15 +85,19 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
     }
 
     private void initDynamic(View view) {
-        String path = "00009";
+        MyApp myApp = (MyApp)getActivity().getApplication();
+        User user = myApp.getUser();
+        String userId = String.valueOf(user.getUserId());
+        System.out.println("***************=====******");
+        System.out.println(userId);
         try {
             System.out.println();
             String AbsolutePath= getContext().getFilesDir().toString();
-            File file = new File(AbsolutePath +"/" + path);
+            File file = new File(AbsolutePath +"/" + userId);
           //  System.out.println(file.exists());
             if (file.exists()) {
                 List<MessageBean> dynamicData;
-                FileInputStream fileInputStream = getContext().openFileInput(path);
+                FileInputStream fileInputStream = getContext().openFileInput(userId);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 dynamicData = (ArrayList)objectInputStream.readObject();
                 System.out.println("*************************************2");

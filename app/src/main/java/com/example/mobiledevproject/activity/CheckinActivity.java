@@ -101,12 +101,15 @@ public class CheckinActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MyApp app = (MyApp) getApplication();
                 User user = app.getUser();
-//                String userId = String.valueOf(user.getUserId());
-                String userId = "00009";
+                String userId = String.valueOf(user.getUserId());
+                System.out.println("=============************================");
+                System.out.println(userId);
+//                String userId = "00009";
                 String content = contentET.getText().toString();
 
                 imagePath.remove("PHOTO_TAKING");
-                List<String> localImages = new ArrayList<>();
+//                List<String> localImages = new ArrayList<>();
+                List<String> localImages = imagePath;
                 List<String> onlineImages = new ArrayList<>();
                 if (content == null && localImages == null) {
 

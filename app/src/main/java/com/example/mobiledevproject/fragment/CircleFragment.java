@@ -85,7 +85,7 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
     }
 
     public void initView(View view) {
-
+        String groupId = String.valueOf(group.getGroupId());
         UserBean userBean = new UserBean("001", "德玛西亚", "data");
         List<UserBean> checkinMembers = new ArrayList<>();
         List<UserBean> notCheckinMembers = new ArrayList<>();
