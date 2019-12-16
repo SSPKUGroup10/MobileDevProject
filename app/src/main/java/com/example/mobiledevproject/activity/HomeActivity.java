@@ -88,6 +88,9 @@ public class HomeActivity extends AppCompatActivity {
         user = (User) intent.getSerializableExtra("user_info");
         String token = intent.getStringExtra("token");
 
+
+
+
         app.setUser(user);
         app.setToken(token);
 
@@ -95,6 +98,9 @@ public class HomeActivity extends AppCompatActivity {
         StorageConfig.SP_NAME = user.getUserName();
         //  将token本地化存储
         Utility.setData(HomeActivity.this, StorageConfig.SP_KEY_TOKEN, token);
+    }
+
+    private void refreshCircleInfo(){
 
     }
 

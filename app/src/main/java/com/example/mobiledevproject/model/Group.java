@@ -11,7 +11,8 @@ public class Group implements Serializable {
 
     @Expose(serialize = false)
     private List<User> memberList;
-    @Expose(serialize = false)
+//    @Expose(serialize = false)
+    @Expose
     private int groupId;
     @Expose
     @SerializedName("name")
@@ -27,10 +28,10 @@ public class Group implements Serializable {
     @Expose
     private String checkRule;
     @Expose
-    @SerializedName("startAtDesc")
+//    @SerializedName("startAtDesc")
     private String startAt;
     @Expose
-    @SerializedName("endAtDesc")
+//    @SerializedName("endAtDesc")
     private String endAt;
 
     public boolean containsUser(User user){
@@ -41,6 +42,21 @@ public class Group implements Serializable {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "memberList=" + memberList +
+                ", groupId=" + groupId +
+                ", groupName='" + groupName + '\'' +
+                ", masterId=" + masterId +
+                ", description='" + description + '\'' +
+                ", type='" + type + '\'' +
+                ", checkRule='" + checkRule + '\'' +
+                ", startAt='" + startAt + '\'' +
+                ", endAt='" + endAt + '\'' +
+                '}';
     }
 
     public String getCheckRule() {
@@ -75,6 +91,7 @@ public class Group implements Serializable {
         this.masterId = groupCreate.getMasterId();
         this.startAt = groupCreate.getStartAt();
         this.endAt = groupCreate.getEndAt();
+        this.groupId = groupCreate.getGroupId();
         this.memberList = new ArrayList<>();
     }
 

@@ -17,21 +17,10 @@ import com.example.mobiledevproject.config.API;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.GroupCreate;
-import com.example.mobiledevproject.model.User;
-import com.example.mobiledevproject.util.HttpUtil;
-import com.example.mobiledevproject.util.StatusCodeUtil;
 import com.example.mobiledevproject.util.Utility;
 import com.google.android.material.card.MaterialCardView;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class ListRcvAdapter extends RecyclerView.Adapter<ListRcvAdapter.GroupViewHolder> {
 
@@ -68,52 +57,17 @@ public class ListRcvAdapter extends RecyclerView.Adapter<ListRcvAdapter.GroupVie
                 Log.i(TAG, "onClick: "+position);
                 GroupCreate groupSrc = infoList.get(position);
                 int groupId = groupSrc.getGroupId();
-                Log.i(TAG, "onClick: groupid="+groupId);
+//                Log.i(TAG, "onClick: groupid="+groupId);
                 String token = Utility.getData(context, StorageConfig.SP_KEY_TOKEN);
                 String url = API.CIRCLE+groupId+"/members/";
                 Log.i(TAG, "onClick: "+url);
                 Group group = new Group(groupSrc);
+//                Log.i(TAG, "onClick: groupid2="+group.getGroupId());
 
-
-                HttpUtil.getRequestWithToken(url, token, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String responseBody = response.body().string();
-                        Log.i(TAG, "onResponse: "+responseBody);
-                        JsonObject jsonObject;
-                        if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
-                            int status = jsonObject.get("status").getAsInt();
-                            if (StatusCodeUtil.isNormalStatus(status)) {
-                                //  正确
-
-                                JsonArray data = jsonObject.get("data").getAsJsonArray();
-                                for(JsonElement member:data){
-                                    JsonObject cur = member.getAsJsonObject();
-                                    User user = new User();
-                                    user.setUserId(cur.get("UserID").getAsInt());
-                                    user.setUserName(cur.get("Username").getAsString());
-                                    group.getMemberList().add(user);
-                                }
-
-
-                                Intent intent = new Intent(context, GroupActivity.class);
-                                intent.putExtra("group_info", group);
-                                context.startActivity(intent);
-
-                            } else {
-                                Log.i(TAG, "onResponse: " + status);
-                            }
-                        } else {
-                            Log.i(TAG, "onResponse: 响应内容错误");
-                        }
-                    }
-                });
-
+                Log.i(TAG, "onClick: 进入圈子之前："+group.toString());
+                Intent intent = new Intent(context, GroupActivity.class);
+                intent.putExtra("group_info", group);
+                context.startActivity(intent);
 
             }
         });

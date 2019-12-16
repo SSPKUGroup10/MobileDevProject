@@ -17,10 +17,10 @@ public class GroupCreate implements Serializable {
     @Expose
     private String type = "";
     @Expose
-    @SerializedName("startAtDesc")
+//    @SerializedName("startAtDesc")
     private String startAt;
     @Expose
-    @SerializedName("endAtDesc")
+//    @SerializedName("endAtDesc")
     private String endAt;
 
     @Expose

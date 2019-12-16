@@ -49,6 +49,17 @@ public class User implements Serializable {
         otherCircles = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", joinedCircles=" + joinedCircles +
+                ", otherCircles=" + otherCircles +
+                '}';
+    }
+
     public int getUserId() {
         return userId;
     }
