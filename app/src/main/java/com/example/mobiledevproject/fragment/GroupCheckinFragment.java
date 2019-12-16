@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.DynamicAdapter;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
+import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.MessageBean;
 
 import java.io.File;
@@ -29,7 +30,8 @@ import butterknife.Unbinder;
 public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
 
     Unbinder unbinder;
-    String title, content;
+    String title;
+    Group group;
 
 
     public GroupCheckinFragment() {
@@ -37,10 +39,10 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
     }
 
     //  单例模式
-    public static GroupCheckinFragment newInstance(String title, String content) {
+    public static GroupCheckinFragment newInstance(String title, Group group) {
         GroupCheckinFragment fragment = new GroupCheckinFragment();
         fragment.title = title;
-        fragment.content = content;
+        fragment.group = group;
         return fragment;
     }
 

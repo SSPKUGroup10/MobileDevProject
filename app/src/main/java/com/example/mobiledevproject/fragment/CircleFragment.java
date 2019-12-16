@@ -10,13 +10,15 @@ import androidx.fragment.app.Fragment;
 import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
+import com.example.mobiledevproject.model.Group;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class CircleFragment extends Fragment implements GetFragmentInfo {
     Unbinder unbinder;
-    String title, content;
+    String title;
+    Group group;
     MyApp myApp;
 
 
@@ -24,10 +26,10 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
         // Required empty public constructor
     }
 
-    public static CircleFragment newInstance(String title, String content) {
+    public static CircleFragment newInstance(String title, Group group) {
         CircleFragment fragment = new CircleFragment();
         fragment.title = title;
-        fragment.content = content;
+        fragment.group = group;
         return fragment;
     }
 
