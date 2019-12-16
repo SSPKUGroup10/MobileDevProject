@@ -15,7 +15,7 @@ public class GroupCreate implements Serializable {
     @SerializedName("name")
     private String groupName;
     @Expose
-    private String type = "";
+    private String type;
     @Expose
 //    @SerializedName("startAtDesc")
     private String startAt;
@@ -27,20 +27,23 @@ public class GroupCreate implements Serializable {
     @SerializedName("desc")
     private String description;
     @Expose
-    private String checkRule = "";
+    private String checkRule;
 
     @Expose
     @SerializedName("circleMasterId")
-    private int masterId;
+    private int masterId = -1;
 
     @Override
     public String toString() {
         return "GroupCreate{" +
-                "groupName='" + groupName + '\'' +
-                ", description='" + description + '\'' +
-                ", masterId=" + masterId +
+                "groupId=" + groupId +
+                ", groupName='" + groupName + '\'' +
+                ", type='" + type + '\'' +
                 ", startAt='" + startAt + '\'' +
                 ", endAt='" + endAt + '\'' +
+                ", description='" + description + '\'' +
+                ", checkRule='" + checkRule + '\'' +
+                ", masterId=" + masterId +
                 '}';
     }
 
@@ -51,6 +54,15 @@ public class GroupCreate implements Serializable {
     public GroupCreate(String groupName, String description){
         this.groupName = groupName;
         this.description = description;
+    }
+
+    public boolean isCompleted(){
+        if("".equals(groupName) || "".equals(description)
+        || "".equals(checkRule) || "".equals(type)
+        || "".equals(startAt) || "".equals(endAt)
+        || masterId==-1){
+            return false;
+        } return true;
     }
 
     public int getGroupId() {

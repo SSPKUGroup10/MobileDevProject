@@ -281,8 +281,8 @@ public class GroupActivity extends AppCompatActivity {
     private void viewPagerInit() {
         fragmentList = new ArrayList<>();
         fragmentList.add(IntroFragment.newInstance("简介", group));
-        fragmentList.add(GroupCheckinFragment.newInstance("动态", "内容"));
-        fragmentList.add(CircleFragment.newInstance("圈子", "内容"));
+        fragmentList.add(GroupCheckinFragment.newInstance("动态", group));
+        fragmentList.add(CircleFragment.newInstance("圈子", group));
         fragmentList.add(ManageFragment.newInstance("管理", "内容"));
         contentsVp.setAdapter(new ContentsVpAdapter(getSupportFragmentManager(), fragmentList));
     }

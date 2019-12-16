@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -124,7 +125,7 @@ public class CreateGroupActivity extends AppCompatActivity {
                         Log.i(TAG, "onClick: " + minute);
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-                        tvCgStartat.setText(sdf.format(calendar.getTime()));
+                        tvCgEndat.setText(sdf.format(calendar.getTime()));
                     }
                 }, hour, minute, true).show();
             }
@@ -136,6 +137,12 @@ public class CreateGroupActivity extends AppCompatActivity {
                 Gson gsonEx = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 Intent intentFromHome = getIntent();
                 GroupCreate groupSrc = getCreateInfo();
+
+                if(!groupSrc.isCompleted()){
+                    Toast.makeText(CreateGroupActivity.this, "请补全相关信息！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //  user信息用于给group添加masterId，并且在需要token的时候用user信息来重新申请
                 User userSrc = (User) intentFromHome.getSerializableExtra("user");
                 UserCreate user = new UserCreate(userSrc);
@@ -225,8 +232,11 @@ public class CreateGroupActivity extends AppCompatActivity {
 //        groupCreate.setStartAt("2020-10-24 11:11:11");
 //        groupCreate.setEndAt("2020-10-24 11:11:11");
 
-        groupCreate.setStartAt(tvCgStartat.getText().toString());
-        groupCreate.setEndAt(tvCgEndat.getText().toString());
+        String startAtFmt = ("1970-00-00 "+tvCgStartat.getText()+":00");
+        String endAtFmt = ("1970-00-00 "+tvCgEndat.getText()+":00");
+
+        groupCreate.setStartAt(startAtFmt);
+        groupCreate.setEndAt(endAtFmt);
         return groupCreate;
     }
 

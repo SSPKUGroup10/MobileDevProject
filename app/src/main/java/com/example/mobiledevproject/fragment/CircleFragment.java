@@ -14,6 +14,7 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.CircleAdapter;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
+
 import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.model.UserBean;
 import com.example.mobiledevproject.util.HttpUtil;
@@ -31,6 +32,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.example.mobiledevproject.model.Group;
+
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
@@ -41,7 +45,8 @@ import static com.example.mobiledevproject.config.StorageConfig.SP_KEY_TOKEN;
 
 public class CircleFragment extends Fragment implements GetFragmentInfo {
     Unbinder unbinder;
-    String title, content;
+    String title;
+    Group group;
     MyApp myApp;
 
 
@@ -49,10 +54,10 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
         // Required empty public constructor
     }
 
-    public static CircleFragment newInstance(String title, String content) {
+    public static CircleFragment newInstance(String title, Group group) {
         CircleFragment fragment = new CircleFragment();
         fragment.title = title;
-        fragment.content = content;
+        fragment.group = group;
         return fragment;
     }
 
@@ -80,7 +85,7 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
     }
 
     public void initView(View view) {
-        getApplication
+
         UserBean userBean = new UserBean("001", "德玛西亚", "data");
         List<UserBean> checkinMembers = new ArrayList<>();
         List<UserBean> notCheckinMembers = new ArrayList<>();
