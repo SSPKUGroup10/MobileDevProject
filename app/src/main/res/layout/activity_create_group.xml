@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroudYellow"
     tools:context=".activity.CreateGroupActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -23,12 +24,11 @@
         />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/vgl_divide_btn_tv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/vgl_divide_btn_tv"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"
-        />
+        app:layout_constraintGuide_percent="0.40" />
 
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
@@ -39,11 +39,11 @@
         />
 
 
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/til_cg_name"
-        android:hint="Group Name"
         app:boxBackgroundMode="filled"
 
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
@@ -52,9 +52,11 @@
 
         >
         <EditText
+            style="@style/InputBoxStyle"
+            android:hint="小组名字"
             android:id="@+id/et_cg_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edittext_height"
 
             />
 
@@ -64,7 +66,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/til_cg_description"
-        android:hint="Group Description"
         app:boxBackgroundMode="filled"
 
         app:layout_constraintTop_toBottomOf="@id/til_cg_name"
@@ -74,8 +75,10 @@
         >
 
         <EditText
+            style="@style/InputBoxStyle"
+            android:hint="小组描述"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edittext_height"
             android:id="@+id/et_cg_description"
             />
 
@@ -85,7 +88,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/til_cg_rule"
-        android:hint="Group Rules"
         app:boxBackgroundMode="filled"
 
         app:layout_constraintTop_toBottomOf="@id/til_cg_description"
@@ -95,8 +97,10 @@
         >
 
         <EditText
+            style="@style/InputBoxStyle"
+            android:hint="小组规则"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/edittext_height"
             android:id="@+id/et_cg_rule"
             />
 
@@ -107,7 +111,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="开始时间"
-
+        android:background="@drawable/border_button"
 
         app:layout_constraintLeft_toLeftOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_divide_btn_tv"
@@ -117,6 +121,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tv_cg_startat"
+        android:textSize="20sp"
         tools:text="10：00"
 
         app:layout_constraintLeft_toRightOf="@id/btn_cg_startat"
@@ -129,6 +134,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="结束时间"
+        android:background="@drawable/border_button"
 
         app:layout_constraintTop_toBottomOf="@id/btn_cg_startat"
         app:layout_constraintLeft_toLeftOf="@id/vgl_0.05"
@@ -139,6 +145,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tv_cg_endat"
+        android:textSize="20sp"
         tools:text="11：00"
 
         app:layout_constraintLeft_toRightOf="@id/btn_cg_endat"
@@ -147,16 +154,29 @@
         app:layout_constraintBaseline_toBaselineOf="@id/btn_cg_endat"
         />
 
-    <Spinner
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/btn_cg_type"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spin_cg_type"
-        android:entries="@array/group_types"
+        android:text="打卡类型"
+        android:background="@drawable/border_button"
 
         app:layout_constraintTop_toBottomOf="@id/btn_cg_endat"
+        app:layout_constraintRight_toLeftOf="@id/vgl_divide_btn_tv"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
-        >
-    </Spinner>
+        tools:layout_editor_absoluteY="234dp" />
+
+    <Spinner
+        android:id="@+id/spin_cg_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:entries="@array/group_types"
+        android:textSize="20sp"
+
+        app:layout_constraintLeft_toRightOf="@id/vgl_divide_btn_tv"
+        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
+        app:layout_constraintTop_toBottomOf="@id/tv_cg_endat"></Spinner>
 
     <Button
         android:layout_width="0dp"

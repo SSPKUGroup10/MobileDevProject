@@ -1,6 +1,7 @@
 package com.example.mobiledevproject.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,11 +46,15 @@ public class LoginActivity extends AppCompatActivity {
     ImageView iv_third_method1 = null;
     ImageView iv_third_method2 = null;
 
+    SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        sp = this.getSharedPreferences("init_config", MODE_PRIVATE);
         viewInit();
         viewSetOnClick();
     }
@@ -163,6 +168,11 @@ public class LoginActivity extends AppCompatActivity {
                                         it_login_to_home.putExtra("token", token);
                                         it_login_to_home.putExtra("user_info", user);
                                         Log.i(TAG, "run: "+user.toString());
+
+//                                        SharedPreferences.Editor editor = sp.edit();
+//                                        editor.putBoolean("logon", true);
+//                                        editor.commit();
+
 
                                         startActivity(it_login_to_home);
                                     }

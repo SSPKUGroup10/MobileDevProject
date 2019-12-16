@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.CircleAdapter;
 import com.example.mobiledevproject.config.StorageConfig;
@@ -40,6 +41,7 @@ import static com.example.mobiledevproject.config.StorageConfig.SP_KEY_TOKEN;
 public class CircleFragment extends Fragment implements GetFragmentInfo {
     Unbinder unbinder;
     String title, content;
+    MyApp myApp;
 
 
     public CircleFragment() {
@@ -68,6 +70,9 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
 
 
         initView(view);
+
+
+        myApp = (MyApp)getActivity().getApplication();
 
 
         return view;

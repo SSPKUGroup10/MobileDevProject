@@ -76,6 +76,7 @@ public class HomeFragment extends Fragment {
         dataInit();
         initRecycleView();
         viewSetOnClick();
+
     }
 
     private void dataInit() {
@@ -131,7 +132,6 @@ public class HomeFragment extends Fragment {
                 if (resultCode == getActivity().RESULT_OK) {
                     GroupCreate createdGroup = (GroupCreate) data.getSerializableExtra("group_info");
                     Log.i(TAG, "onActivityResult: "+createdGroup.toString());
-
                     //  新圈子信息添加到列表
                     addGroupItem(createdGroup);
                     //  刷新界面
@@ -141,8 +141,5 @@ public class HomeFragment extends Fragment {
             default:
         }
     }
-
-
-
 
 }

@@ -1,6 +1,7 @@
 package com.example.mobiledevproject.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.BodyVpAdapter;
-import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.fragment.ExploreFragment;
 import com.example.mobiledevproject.fragment.HomeFragment;
@@ -55,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         app = (MyApp)getApplication();
 
+        //  登录状态检测
+//        logon();
 
         //  用户信息初始化
         userInfoInit();
@@ -67,6 +70,16 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void logon(){
+        SharedPreferences sp = this.getSharedPreferences("init_config", MODE_PRIVATE);
+        if(!sp.getBoolean("logon", false)){
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
+        } else {
+
+        }
     }
 
     private void userInfoInit(){

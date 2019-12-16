@@ -33,16 +33,14 @@
 
         app:layout_constraintGuide_percent="0.95"
         />
-
-
-
     <!-- TODO: Update blank fragment layout -->
-
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
+        android:layout_marginTop="@dimen/item_interval_text"
+        android:layout_marginBottom="@dimen/item_interval_text"
         android:drawablePadding="10dp"
         android:text="打卡日历"
         android:textSize="@dimen/item_manage_textsize"
@@ -53,6 +51,8 @@
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         app:layout_constraintVertical_chainStyle="packed"
         />
+
+
 
     <TextView
         android:layout_width="0dp"

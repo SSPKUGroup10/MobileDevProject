@@ -41,8 +41,10 @@
         app:layout_constraintTop_toBottomOf="@id/hgl_0.05"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
+        app:cardCornerRadius="@dimen/corner_radius"
+        android:layout_margin="10dp"
         android:clickable="true"
-        app:cardElevation="18dp"
+        app:cardElevation="8dp"
         >
         <!--app:layout_constraintLeft_toRightOf="@id/vgl_0.05"-->
         <!--app:layout_constraintRight_toLeftOf="@id/vgl_0.95"-->
@@ -50,10 +52,11 @@
             android:id="@+id/tv_home_create_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="创建一个圈子"
-            android:textSize="30dp"
+            android:text="＋ 创建一个圈子"
+            android:textSize="20dp"
             android:textAlignment="center"
-            android:layout_margin="16dp"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="20dp"
             />
 
     </com.google.android.material.card.MaterialCardView>

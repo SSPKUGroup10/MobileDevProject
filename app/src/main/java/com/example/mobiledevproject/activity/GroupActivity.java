@@ -9,12 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.ContentsVpAdapter;
-import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.fragment.CircleFragment;
 import com.example.mobiledevproject.fragment.GroupCheckinFragment;
 import com.example.mobiledevproject.fragment.IntroFragment;
@@ -50,7 +51,12 @@ public class GroupActivity extends AppCompatActivity {
     @BindView(R.id.btn_checkin)
     Button checkinBtn;
 
+    static final String STATE_GROUP = "cur_group";
+    static final String STATE_USER = "cur_user";
+
+//    @AutoRestore
     public Group group;
+//    @AutoRestore
     public User user;
 
     @Override
@@ -59,13 +65,23 @@ public class GroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
 
-//        viewInit();
-        groupInit();
+
+
+        if(savedInstanceState!=null){
+            Log.i(TAG, "onCreate: 已经重新加载");
+            group = (Group)savedInstanceState.getSerializable(STATE_GROUP);
+//            user = (User)savedInstanceState.getSerializable(STATE_USER);
+        } else {
+            Log.i(TAG, "onCreate: 需要重新初始化");
+            groupInit();
+        }
+
         viewPagerInit();
         tabInit();
 
         MyApp app = (MyApp)getApplication();
         user = app.getUser();
+
         Log.i(TAG, "onCreate: "+user.toString());
 
 
@@ -80,6 +96,8 @@ public class GroupActivity extends AppCompatActivity {
 //                }else{
 //                    Toast.makeText(v.getContext(),"不在该圈子打卡时间内",Toast.LENGTH_SHORT).show();
 //                }
+
+
             }
         });
 
@@ -134,16 +152,14 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void groupInit(){
-        if(group==null){
-            intentReceived();
-        }
-    }
-
-    private void intentReceived() {
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra("group_info");
         viewSetInfo(group);
     }
+
+//    private void intentReceived() {
+//
+//    }
 
     private void viewSetInfo(Group group) {
 
@@ -158,4 +174,13 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+        Log.i(TAG, "onSaveInstanceState: 已经保存");
+
+        savedInstanceState.putSerializable(STATE_GROUP, group);
+        savedInstanceState.putSerializable(STATE_USER, user);
+    }
 }

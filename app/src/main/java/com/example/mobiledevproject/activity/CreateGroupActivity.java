@@ -30,6 +30,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -60,6 +61,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     Spinner spinCgType;
 
     private Calendar calendar;
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     private static final String TAG = "CreateGroupActivity";
 
@@ -101,7 +103,9 @@ public class CreateGroupActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         Log.i(TAG, "onClick: " + hourOfDay);
                         Log.i(TAG, "onClick: " + minute);
-                        tvCgStartat.setText(hourOfDay + ":" + minute);
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        tvCgStartat.setText(sdf.format(calendar.getTime()));
                     }
                 }, hour, minute, true).show();
             }
