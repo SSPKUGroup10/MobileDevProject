@@ -30,6 +30,9 @@ public class Group implements Serializable {
     @Expose
 //    @SerializedName("startAtDesc")
     private String startAt;
+
+
+
     @Expose
 //    @SerializedName("endAtDesc")
     private String endAt;
@@ -150,4 +153,5 @@ public class Group implements Serializable {
     public void setcheckRule(String checkRule) {
         this.checkRule = checkRule;
     }
+
 }

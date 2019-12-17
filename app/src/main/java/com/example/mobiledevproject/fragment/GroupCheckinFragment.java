@@ -11,20 +11,30 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.DynamicAdapter;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.MessageBean;
+import com.example.mobiledevproject.model.User;
+import com.example.mobiledevproject.util.HttpUtil;
+import com.example.mobiledevproject.util.Utility;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+import static com.example.mobiledevproject.config.StorageConfig.SP_KEY_TOKEN;
 
 
 public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
@@ -75,19 +85,24 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
     }
 
     private void initDynamic(View view) {
-        String path = "0011";
+        MyApp myApp = (MyApp)getActivity().getApplication();
+        User user = myApp.getUser();
+        String userId = String.valueOf(user.getUserId());
+        System.out.println("***************=====******");
+        System.out.println(userId);
         try {
-
+            System.out.println();
             String AbsolutePath= getContext().getFilesDir().toString();
-            File file = new File(AbsolutePath +"/" + path);
-            System.out.println(file.exists());
+            File file = new File(AbsolutePath +"/" + userId);
+          //  System.out.println(file.exists());
             if (file.exists()) {
                 List<MessageBean> dynamicData;
-                FileInputStream fileInputStream = getContext().openFileInput(path);
+                FileInputStream fileInputStream = getContext().openFileInput(userId);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 dynamicData = (ArrayList)objectInputStream.readObject();
+                System.out.println("*************************************2");
                 System.out.println(dynamicData.size());
-                List<String> data = null;
+
                 fileInputStream.close();
                 objectInputStream.close();
 
@@ -100,7 +115,6 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
+
 }

@@ -167,12 +167,13 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                         String responseBody = response.body().string();
                         Log.i(TAG, "onResponse: " + responseBody);
-
+                        System.out.println("=====================");
+                        System.out.println(responseBody);
                         JsonObject jsonObject;
                         if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
                             int status = jsonObject.get("status").getAsInt();
                             if (StatusCodeUtil.isNormalStatus(status)) {
-                                JsonObject data = jsonObject.get("data").getAsJsonObject();
+                                JsonObject data = jsonObject.get("data").getAsJsonArray().get(0).getAsJsonObject();
                                 int groupId = data.get("id").getAsInt();
                                 groupSrc.setGroupId(groupId);
 

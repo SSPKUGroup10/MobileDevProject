@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -32,8 +33,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+
+import java.text.SimpleDateFormat;
+
 import java.io.IOException;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -99,10 +105,16 @@ public class GroupActivity extends AppCompatActivity {
         checkinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GroupActivity.this, CheckinActivity.class);
-                intent.putExtra("group", group);
-                startActivity(intent);
-                finish();
+
+                if(canCheckin()) {
+                    Intent intent = new Intent(GroupActivity.this, CheckinActivity.class);
+                    intent.putExtra("group",group);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Toast.makeText(v.getContext(),"不在该圈子打卡时间内",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -138,6 +150,60 @@ public class GroupActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+
+    public boolean canCheckin() {
+
+        String time1 = "2019-12-12 00:10:10";
+        String time2 = "2019-12-12 23:10:10";
+//        String beginTime = group.getStartAt().split(" ")[1];
+        String beginTime = time1.split(" ")[1];
+        String []str1 = beginTime.split(":");
+        if(str1[0].charAt(0) == '0')
+            beginTime = str1[0].charAt(1)+":"+str1[1];
+        else
+            beginTime = str1[0]+":"+str1[1];
+
+//        String endTime = group.getStartAt().split(" ")[1];
+        String endTime = time2.split(" ")[1];
+        String [] str2 = endTime.split(":");
+
+        if(str2[0].charAt(0) == '0')
+            endTime = str2[0].charAt(1)+":"+str2[1];
+        else
+            endTime = str2[0]+":"+str2[1];
+        System.out.println(beginTime);
+        System.out.println(endTime);
+
+        //current time
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm");
+        String currentTime = dateFormat.format(date);
+
+        System.out.println(beginTime);
+        System.out.println(endTime);
+        System.out.println(currentTime);
+
+        int beginTimeHour = Integer.parseInt(beginTime.split(":")[0]);
+        int beginTimeMinute = Integer.parseInt(beginTime.split(":")[1]);
+        int endTimeHour = Integer.parseInt(endTime.split(":")[0]);
+        int endTimeMinute = Integer.parseInt(endTime.split(":")[1]);
+        int currentTimeHour = Integer.parseInt(currentTime.split(":")[0]);
+        int currentTimeMinute = Integer.parseInt(currentTime.split(":")[1]);
+
+        if (beginTimeHour <= currentTimeHour && currentTimeHour <= endTimeHour) {
+            if (currentTimeHour == endTimeHour) {
+                if (currentTimeMinute <= endTimeMinute)
+                    return true;
+                else
+                    return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
     private void groupInit() {
@@ -212,6 +278,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void viewPagerInit() {
         fragmentList = new ArrayList<>();
