@@ -9,12 +9,14 @@
     android:dividerPadding="1dp"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <TextView
         android:id="@+id/dynamic_content_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         tools:text="hhhhhhh"/>
+
     <GridView
         android:id="@+id/dynamic_images_gv"
         android:layout_width="wrap_content"
@@ -27,6 +29,7 @@
         android:verticalSpacing="5dp"
         android:layout_marginTop="5dp"
         />
+
     <TextView
         android:id="@+id/dynamic_time_tv"
         android:layout_width="match_parent"
@@ -39,6 +42,12 @@
 
 
 
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/lightgrey"
+        />
 
 
 </LinearLayout>

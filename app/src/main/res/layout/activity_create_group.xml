@@ -53,6 +53,10 @@
         app:layout_constraintGuide_percent="0.05"
         />
 
+<androidx.core.widget.NestedScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btn_gp_name"
@@ -68,6 +72,7 @@
         <EditText
 
             style="@style/InputBoxStyle"
+            android:gravity="center"
             android:hint="小组名字"
             android:id="@+id/et_cg_name"
             android:layout_width="0dp"
@@ -131,8 +136,7 @@
 
             app:layout_constraintTop_toBottomOf="@id/et_cg_description"
             app:layout_constraintLeft_toRightOf="@id/vgl_divide_btn_tvr"
-            app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-            />
+            app:layout_constraintRight_toLeftOf="@id/vgl_0.95" />
 
 
     <Button
@@ -222,11 +226,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_cg_commit"
         android:background="@drawable/border_button"
+        android:layout_marginTop="@dimen/item_interval"
         android:text="提交"
 
-        app:layout_constraintBottom_toBottomOf="@id/hgl_0.90"
+        app:layout_constraintTop_toBottomOf="@id/spin_cg_type"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         />
-
+/>
 </androidx.constraintlayout.widget.ConstraintLayout>

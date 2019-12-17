@@ -207,14 +207,15 @@ public class GroupActivity extends AppCompatActivity {
     }
 
     private void groupInit() {
+
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra("group_info");
         nameTv.setText(group.getGroupName());
 
-        Log.i(TAG, "groupInit: groupid="+group.getGroupId());
 
+        Log.i(TAG, "groupInit: groupid="+group.getGroupId());
         contentFresh();
-//        Log.i(TAG, "groupInit: 成员人数"+group.getMemberList().size());
+
     }
 
     private void contentFresh(){
@@ -223,6 +224,7 @@ public class GroupActivity extends AppCompatActivity {
 
         if(joinState()){
             viewSetInfo();
+            hasJoined();
             return;
         }
 

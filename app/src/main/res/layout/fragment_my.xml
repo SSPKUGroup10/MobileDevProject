@@ -101,7 +101,8 @@
         android:id="@+id/tv_my_userinfo"
         android:layout_width="0dp"
         android:layout_height="@dimen/edittext_height"
-        android:layout_marginTop="100dp"
+
+        android:layout_marginTop="160dp"
         android:layout_marginBottom="@dimen/item_interval"
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
         android:drawablePadding="10dp"
@@ -113,7 +114,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-        app:layout_constraintTop_toBottomOf="@id/iv_my_userimage"
+        app:layout_constraintTop_toTopOf="@+id/hgl_0.25"
         app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
