@@ -102,6 +102,7 @@ public class GroupActivity extends AppCompatActivity {
                 Intent intent = new Intent(GroupActivity.this, CheckinActivity.class);
                 intent.putExtra("group", group);
                 startActivity(intent);
+                finish();
             }
         });
     }

@@ -66,7 +66,12 @@ public class IntroFragment extends Fragment implements GetFragmentInfo {
 
         tvIntroMaster.setText(Integer.toString(group.getMasterId()));
         tvIntroDesc.setText(group.getDescription());
-        String seTime = group.getStartAt()+"~"+group.getEndAt();
+        String a = group.getStartAt();
+        String b = group.getEndAt();
+        a = a.split(" ")[1];
+        b = b.split(" ")[1];
+
+        String seTime = a+"~"+b;
         tvIntroTime.setText(seTime);
         tvIntroRule.setText(group.getCheckRule());
 
