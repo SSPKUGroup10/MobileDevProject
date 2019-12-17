@@ -97,13 +97,13 @@ public class HomeFragment extends Fragment {
 
     private void dataInit() {
 
-        if (Utility.hasSpItem(getContext(), SP_GROUP_LIST_KEY)) {
-            infoList = Utility.getDataList(getContext(), SP_GROUP_LIST_KEY, GroupCreate.class);
-        } else {
+//        if (Utility.hasSpItem(getContext(), SP_GROUP_LIST_KEY)) {
+//            infoList = Utility.getDataList(getContext(), SP_GROUP_LIST_KEY, GroupCreate.class);
+//        } else {
             //  从User中读取信息
             infoList = user.getJoinedCircles();
-            Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, infoList);
-        }
+//            Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, infoList);
+//        }
     }
 
     private void viewSetOnClick() {
@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
         srlHomeFragmentRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                refreshCircleInfo();
             }
         });
     }
@@ -136,12 +136,13 @@ public class HomeFragment extends Fragment {
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Log.i(TAG, "onFailure: 网络请求错误");
+                srlHomeFragmentRefresh.setRefreshing(false);
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseBody = response.body().string();
                 Log.i(TAG, "onResponse: " + responseBody);
-
+                
                 JsonObject jsonObject;
                 if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
                     int status = jsonObject.get("status").getAsInt();
@@ -189,7 +190,9 @@ public class HomeFragment extends Fragment {
                                 Log.i(TAG, "run: "+newUser.toString());
                                 user = newUser;
 
-                        Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, user.getJoinedCircles());
+
+//                        Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, user.getJoinedCircles());
+                        Log.i(TAG, "onResponse: 刷新完成");
                         dataInit();
                         srlHomeFragmentRefresh.setRefreshing(false);
                     } else {

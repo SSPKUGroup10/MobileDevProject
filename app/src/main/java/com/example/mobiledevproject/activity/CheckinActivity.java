@@ -6,11 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.Telephony;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,21 +25,16 @@ import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.adapter.PhotoAdapter;
 import com.example.mobiledevproject.config.StorageConfig;
-
 import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.MessageBean;
 import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.util.GlideEngine;
-
 import com.example.mobiledevproject.util.HttpUtil;
-
 import com.example.mobiledevproject.util.Utility;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -242,7 +234,9 @@ public class CheckinActivity extends AppCompatActivity {
 
         System.out.println(group.getGroupId());
         System.out.println(user.getUserId());
-        String address = "http://172.81.215.104/api/v1/circles/" + "1" + "/members/" + user.getUserId() + "/clockin/";
+        String address = "http://172.81.215.104/api/v1/circles/" + group.getGroupId() + "/members/" + user.getUserId() + "/clockin/";
+        Log.i(TAG, "uploadMessage: "+address);
+
         HttpUtil.postOkHttpRequestByForm(address, token, requestBody, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -254,6 +248,8 @@ public class CheckinActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
                 JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                Log.i(TAG, "onResponse: "+jsonObject);
+
                 String picture = jsonObject.getAsJsonObject("data").get("picture").getAsString();
                 System.out.println(picture);
                 imagePaths.add(picture);
