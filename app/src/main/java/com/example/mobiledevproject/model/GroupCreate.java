@@ -59,8 +59,7 @@ public class GroupCreate implements Serializable {
     public boolean isCompleted(){
         if("".equals(groupName) || "".equals(description)
         || "".equals(checkRule) || "".equals(type)
-        || "".equals(startAt) || "".equals(endAt)
-        || masterId==-1){
+        || "".equals(startAt) || "".equals(endAt)){
             return false;
         } return true;
     }
