@@ -101,7 +101,9 @@ public class CheckinActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MyApp app = (MyApp) getApplication();
                 User user = app.getUser();
+                String groupId = String.valueOf(group.getGroupId());
                 String userId = String.valueOf(user.getUserId());
+                userId = groupId + userId;
                 System.out.println("=============************================");
                 System.out.println(userId);
 //                String userId = "00009";
@@ -254,6 +256,7 @@ public class CheckinActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
                 JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                System.out.println(jsonObject);
                 String picture = jsonObject.getAsJsonObject("data").get("picture").getAsString();
                 System.out.println(picture);
                 imagePaths.add(picture);

@@ -85,11 +85,14 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
     }
 
     public void initView(View view) {
+        MyApp app = (MyApp) getActivity().getApplication();
+        User user = app.getUser();
+        String userId = String.valueOf(user.getUserId());
         String groupId = String.valueOf(group.getGroupId());
-        UserBean userBean = new UserBean("001", "德玛西亚", "data");
+        UserBean userBean = new UserBean(userId, "德玛西亚", "data");
         List<UserBean> checkinMembers = new ArrayList<>();
         List<UserBean> notCheckinMembers = new ArrayList<>();
-        if (!getCheckInformation("1", checkinMembers, notCheckinMembers)) {
+        if (!getCheckInformation(groupId, checkinMembers, notCheckinMembers)) {
             return;
         }
         System.out.println(checkinMembers.size());
