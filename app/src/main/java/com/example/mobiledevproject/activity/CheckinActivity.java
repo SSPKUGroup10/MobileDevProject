@@ -93,7 +93,9 @@ public class CheckinActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MyApp app = (MyApp) getApplication();
                 User user = app.getUser();
+                String groupId = String.valueOf(group.getGroupId());
                 String userId = String.valueOf(user.getUserId());
+                userId = groupId + userId;
                 System.out.println("=============************================");
                 System.out.println(userId);
 //                String userId = "00009";
@@ -113,6 +115,7 @@ public class CheckinActivity extends AppCompatActivity {
                     messageBean = new MessageBean(userId, content, localImages, onlineImages, time);
                     //上传失败时重新报错
                     if (!uploadMessage(messageBean, messageBean.getOnlineImagePath())) {
+                        System.out.println("111111111111");
                         Toast.makeText(v.getContext(), "图片上传失败", Toast.LENGTH_SHORT);
                         return;
                     }
@@ -248,6 +251,9 @@ public class CheckinActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
                 JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+
+                System.out.println(jsonObject);
+
                 Log.i(TAG, "onResponse: "+jsonObject);
 
                 String picture = jsonObject.getAsJsonObject("data").get("picture").getAsString();
@@ -255,14 +261,13 @@ public class CheckinActivity extends AppCompatActivity {
                 imagePaths.add(picture);
             }
         });
+        while(!flag[0]) {
 
-        try {
-
-            Thread.sleep(800);
-
-        } catch (
-                Exception e) {
-            e.printStackTrace();
+            try {
+              Thread.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         System.out.println(flag[0]);
         return flag[0];

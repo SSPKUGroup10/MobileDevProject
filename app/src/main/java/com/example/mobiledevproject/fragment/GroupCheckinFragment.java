@@ -85,9 +85,14 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
     }
 
     private void initDynamic(View view) {
-        MyApp myApp = (MyApp)getActivity().getApplication();
-        User user = myApp.getUser();
+
+        MyApp app = (MyApp)getActivity().getApplication();
+        User user = app.getUser();
+        String groupId = String.valueOf(group.getGroupId());
         String userId = String.valueOf(user.getUserId());
+        userId = groupId + userId;
+
+
         System.out.println("***************=====******");
         System.out.println(userId);
         try {
