@@ -187,11 +187,13 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
                 });
 
 
-        try {
-            Thread.sleep(500);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        while(!flag[0]) {
+            try {
+                Thread.sleep(100);
+//                Thread.yield();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return flag[0];
     }

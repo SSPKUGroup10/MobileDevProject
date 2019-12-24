@@ -115,6 +115,7 @@ public class CheckinActivity extends AppCompatActivity {
                     messageBean = new MessageBean(userId, content, localImages, onlineImages, time);
                     //上传失败时重新报错
                     if (!uploadMessage(messageBean, messageBean.getOnlineImagePath())) {
+                        System.out.println("111111111111");
                         Toast.makeText(v.getContext(), "图片上传失败", Toast.LENGTH_SHORT);
                         return;
                     }
@@ -260,14 +261,14 @@ public class CheckinActivity extends AppCompatActivity {
                 imagePaths.add(picture);
             }
         });
+        while(!flag[0]) {
 
-        try {
-
-            Thread.sleep(500);
-
-        } catch (
-                Exception e) {
-            e.printStackTrace();
+            try {
+              Thread.sleep(100);
+//                Thread.yield();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         System.out.println(flag[0]);
         return flag[0];
