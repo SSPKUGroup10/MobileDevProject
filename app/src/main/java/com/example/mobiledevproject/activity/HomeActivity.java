@@ -32,7 +32,6 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
-    public static final String SP_GROUP_LIST_KEY = "group_list";
 
 
     //  当前用户的信息
@@ -59,7 +58,6 @@ public class HomeActivity extends AppCompatActivity {
 
         //  登录状态检测
 //        logon();
-
         //  用户信息初始化
         userInfoInit();
         //  选项卡初始化
@@ -76,11 +74,11 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
             finish();
         } else {
-
         }
     }
 
     private void userInfoInit(){
+
         //  从intent中读取数据
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user_info");
@@ -89,10 +87,8 @@ public class HomeActivity extends AppCompatActivity {
 
         app.setUser(user);
         app.setToken(token);
-        //  配置当前用户专用文件
-//          将token本地化存储
         Utility.setData(HomeActivity.this, StorageConfig.SP_KEY_TOKEN, token);
-        Utility.setDataList(HomeActivity.this, SP_GROUP_LIST_KEY, user.getJoinedCircles());
+        Utility.setDataList(HomeActivity.this, StorageConfig.SP_KEY_GROUP_LIST, user.getJoinedCircles());
     }
 
 

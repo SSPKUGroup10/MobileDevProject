@@ -53,7 +53,7 @@
         app:layout_constraintGuide_percent="0.05"
         />
 
-<androidx.core.widget.NestedScrollView
+<ScrollView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:ignore="MissingConstraints" />
@@ -233,5 +233,5 @@
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         />
-/>
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

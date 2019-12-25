@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +27,8 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -37,77 +38,70 @@ public class LoginActivity extends AppCompatActivity {
     // Log打印的通用Tag
     private final String TAG = "LoginActivity";
 
-    //声明UI对象
-    EditText et_username = null;
-    EditText et_password = null;
-    Button bt_login = null;
-    TextView tv_forget_password = null;
-    TextView tv_to_register = null;
-    ImageView iv_third_method1 = null;
-    ImageView iv_third_method2 = null;
-
     SharedPreferences sp;
+
+    @BindView(R.id.et_username)
+    EditText etUsername;
+    @BindView(R.id.et_password)
+    EditText etPassword;
+
+    @BindView(R.id.bt_login)
+    Button btLogin;
+    @BindView(R.id.tv_forget_password)
+    TextView tvForgetPassword;
+    @BindView(R.id.tv_to_register)
+    TextView tvToRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        ButterKnife.bind(this);
 
         sp = this.getSharedPreferences("init_config", MODE_PRIVATE);
-        viewInit();
         viewSetOnClick();
     }
 
-    private void viewInit() {
-        et_username = findViewById(R.id.et_username);
-        et_password = findViewById(R.id.et_password);
-        bt_login = findViewById(R.id.bt_login);
-        tv_to_register = findViewById(R.id.tv_to_register);
-        tv_forget_password = findViewById(R.id.tv_forget_password);
-    }
-
     private void viewSetOnClick() {
-        String username = et_username.getText().toString();
-        String password = et_password.getText().toString();
+        String username = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
 
         //跳转到注册页面
-        tv_to_register.setOnClickListener(new View.OnClickListener() {
-
+        tvForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it_login_to_register = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(it_login_to_register);
+                Intent intentLoginToRegister = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intentLoginToRegister);
             }
         });
 
         //跳转到找回密码界面
-        tv_forget_password.setOnClickListener(new View.OnClickListener() {
+        tvForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent it_login_to_retrievepassword = new Intent(LoginActivity.this, RetrievePwdActivity.class);
-                startActivity(it_login_to_retrievepassword);
+                Intent intentLoginToRetrievePassword = new Intent(LoginActivity.this, RetrievePwdActivity.class);
+                startActivity(intentLoginToRetrievePassword);
             }
 
         });
 
 
         //登录按钮事件响应
-        bt_login.setOnClickListener(new View.OnClickListener() {
+        btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserCreate info = getUserInfo();
-                //上传json格式数据
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+                UserCreate info = getUserInfo();
                 String jsonInfo = gson.toJson(info);
+
                 HttpUtil.postOkHttpRequest(API.LOGIN, jsonInfo, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
                         e.printStackTrace();
                         Log.i(TAG, "onFailure: 网络请求错误");
-
                     }
+
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String responseBody = response.body().string();
@@ -124,59 +118,32 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.makeText(LoginActivity.this, "登录成功",
                                                 Toast.LENGTH_SHORT).show();
                                         //登录成功后跳转到HomeActivity，通过intent把user和token的信息传过来，user用类传递，token用string
-                                        Intent it_login_to_home = new Intent(LoginActivity.this, HomeActivity.class);
+                                        Intent intentLoginToHome = new Intent(LoginActivity.this, HomeActivity.class);
+
                                         JsonObject data = jsonObject.get("data").getAsJsonObject();
+
                                         String token = data.get("accessToken").getAsString();
                                         int userID = data.get("userID").getAsInt();
-
                                         info.setUserId(userID);
+                                        //  创建User类对象来存储圈子列表
                                         User user = new User(info);
-
 
                                         JsonArray joinedCircles = data.get("joinedCircles").getAsJsonArray();
                                         JsonArray otherCircles = data.get("otherCircles").getAsJsonArray();
 
-                                        for(JsonElement group : joinedCircles){
+                                        //  加载圈子列表
+                                        for (JsonElement group : joinedCircles) {
                                             JsonObject cur = group.getAsJsonObject();
-
-                                            GroupCreate createdGroup = new GroupCreate();
-                                            createdGroup.setGroupName(cur.get("name").getAsString());
-                                            createdGroup.setDescription(cur.get("desc").getAsString());
-                                            createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-                                            createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-                                            createdGroup.setStartAt(cur.get("startAt").getAsString());
-                                            createdGroup.setEndAt(cur.get("endAt").getAsString());
-                                            createdGroup.setType(cur.get("type").getAsString());
-                                            createdGroup.setGroupId(cur.get("id").getAsInt());
-                                            user.getJoinedCircles().add(createdGroup);
-
+                                            user.getJoinedCircles().add(setGroupInfo(cur));
+                                        }
+                                        for (JsonElement group : otherCircles) {
+                                            JsonObject cur = group.getAsJsonObject();
+                                            user.getOtherCircles().add(setGroupInfo(cur));
                                         }
 
-                                        for(JsonElement group : otherCircles){
-                                            JsonObject cur = group.getAsJsonObject();
-
-                                            GroupCreate createdGroup = new GroupCreate();
-                                            createdGroup.setGroupName(cur.get("name").getAsString());
-                                            createdGroup.setDescription(cur.get("desc").getAsString());
-                                            createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-                                            createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-                                            createdGroup.setStartAt(cur.get("startAt").getAsString());
-                                            createdGroup.setEndAt(cur.get("endAt").getAsString());
-                                            createdGroup.setType(cur.get("type").getAsString());
-                                            createdGroup.setGroupId(cur.get("id").getAsInt());
-                                            user.getOtherCircles().add(createdGroup);
-                                        }
-
-                                        it_login_to_home.putExtra("token", token);
-                                        it_login_to_home.putExtra("user_info", user);
-                                        Log.i(TAG, "run: "+user.toString());
-
-//                                        SharedPreferences.Editor editor = sp.edit();
-//                                        editor.putBoolean("logon", true);
-//                                        editor.commit();
-
-
-                                        startActivity(it_login_to_home);
+                                        intentLoginToHome.putExtra("token", token);
+                                        intentLoginToHome.putExtra("user_info", user);
+                                        startActivity(intentLoginToHome);
                                     }
                                 });
                             } else {
@@ -191,12 +158,24 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private GroupCreate setGroupInfo(JsonObject cur) {
+        GroupCreate createdGroup = new GroupCreate();
+        createdGroup.setGroupName(cur.get("name").getAsString());
+        createdGroup.setDescription(cur.get("desc").getAsString());
+        createdGroup.setCheckRule(cur.get("checkRule").getAsString());
+        createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
+        createdGroup.setStartAt(cur.get("startAt").getAsString());
+        createdGroup.setEndAt(cur.get("endAt").getAsString());
+        createdGroup.setType(cur.get("type").getAsString());
+        createdGroup.setGroupId(cur.get("id").getAsInt());
+        return createdGroup;
+    }
 
 
     private UserCreate getUserInfo() {
         UserCreate userCreate = new UserCreate();
-        userCreate.setUserName(et_username.getText().toString());
-        userCreate.setPassword(et_password.getText().toString());
+        userCreate.setUserName(etUsername.getText().toString());
+        userCreate.setPassword(etPassword.getText().toString());
         return userCreate;
     }
 
