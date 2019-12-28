@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.mobiledevproject.R;
+import com.example.mobiledevproject.activity.GroupActivity;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 
 import butterknife.ButterKnife;
@@ -17,7 +19,8 @@ import butterknife.Unbinder;
 public class ManageFragment extends Fragment implements GetFragmentInfo {
     Unbinder unbinder;
     String title, content;
-
+    TextView checkinCalendar;
+    TextView exitGroup;
     public ManageFragment() {
     }
 
@@ -40,7 +43,24 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_manage, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+
+
+
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        checkinCalendar = getActivity().findViewById(R.id.tv_manage_calendar);
+        exitGroup = getActivity().findViewById(R.id.tv_manage_exit);
+        checkinCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GroupActivity.contentsVp.setCurrentItem(1);
+            }
+        });
     }
 
     @Override

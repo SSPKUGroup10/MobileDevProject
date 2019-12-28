@@ -137,13 +137,15 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
                             if (item.get("userId") == null) {
                                 userId = null;
                             } else {
-                                userId = item.getAsJsonPrimitive("userId").toString();
+                                userId = item.getAsJsonPrimitive("userId").toString().replace("\"","");
+                                System.out.println("userId:"+userId);
                             }
                             String username;
                             if (item.get("username") == null) {
                                 username = null;
                             } else {
-                                username = item.getAsJsonPrimitive("username").toString();
+                                username = item.getAsJsonPrimitive("username").toString().replace("\"","");
+                                System.out.println("username:"+username);
                             }
 
                             String userAvatar;
@@ -151,7 +153,7 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
                             if (item.get("userAvatar").isJsonNull()) {
                                 userAvatar = null;
                             } else {
-                                userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                                userAvatar = item.getAsJsonPrimitive("userAvatar").toString().replace("\"","");
                             }
 
                             checkinMembers.add(new UserBean(userId, username, userAvatar));
@@ -165,13 +167,13 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
                             if (item.get("userId") == null) {
                                 userId = null;
                             } else {
-                                userId = item.getAsJsonPrimitive("userId").toString();
+                                userId = item.getAsJsonPrimitive("userId").toString().replace("\"","");
                             }
                             String username;
                             if (item.get("username") == null) {
                                 username = null;
                             } else {
-                                username = item.getAsJsonPrimitive("username").toString();
+                                username = item.getAsJsonPrimitive("username").toString().replace("\"","");
                             }
 
                             String userAvatar;
@@ -179,7 +181,7 @@ public class CircleFragment extends Fragment implements GetFragmentInfo {
                             if (item.get("userAvatar").isJsonNull()) {
                                 userAvatar = null;
                             } else {
-                                userAvatar = item.getAsJsonPrimitive("userAvatar").toString();
+                                userAvatar = item.getAsJsonPrimitive("userAvatar").toString().replace("\"","");
                             }
                             notCheckinMembers.add(new UserBean(userId, username, userAvatar));
                         }

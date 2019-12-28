@@ -42,7 +42,7 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
     Unbinder unbinder;
     String title;
     Group group;
-
+    static Fragment currentFragment;
 
     public GroupCheckinFragment() {
         // Required empty public constructor
@@ -53,6 +53,7 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
         GroupCheckinFragment fragment = new GroupCheckinFragment();
         fragment.title = title;
         fragment.group = group;
+        currentFragment = fragment;
         return fragment;
     }
 
@@ -120,6 +121,9 @@ public class GroupCheckinFragment extends Fragment implements GetFragmentInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public Fragment getCurrentFragment(){
+        return this;
     }
 
 }

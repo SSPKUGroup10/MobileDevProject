@@ -60,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void viewInit() {
-        et_username = findViewById(R.id.et_username);
-        et_password = findViewById(R.id.et_password);
+        et_username = findViewById(R.id.password_old_et);
+        et_password = findViewById(R.id.passworld_new1_et);
         bt_login = findViewById(R.id.bt_login);
         tv_to_register = findViewById(R.id.tv_to_register);
         tv_forget_password = findViewById(R.id.tv_forget_password);

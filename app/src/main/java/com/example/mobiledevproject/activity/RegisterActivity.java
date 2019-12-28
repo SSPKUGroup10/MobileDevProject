@@ -47,8 +47,8 @@ public class RegisterActivity extends AppCompatActivity {
         viewSetOnClick();
     }
     private void viewInit() {
-        et_username = findViewById(R.id.et_username);
-        et_password = findViewById(R.id.et_password);
+        et_username = findViewById(R.id.password_old_et);
+        et_password = findViewById(R.id.passworld_new1_et);
         et_password2 = findViewById(R.id.et_password2);
         bt_submit_register = findViewById(R.id.bt_submit_register);
         tv_serviceagreement = findViewById(R.id.tv_service_agreement);

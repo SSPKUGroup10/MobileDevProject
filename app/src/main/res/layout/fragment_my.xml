@@ -98,7 +98,7 @@
         />
 
     <TextView
-        android:id="@+id/tv_my_userinfo"
+        android:id="@+id/tv_my_password_change"
         android:layout_width="0dp"
         android:layout_height="@dimen/edittext_height"
 
@@ -107,7 +107,7 @@
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
-        android:text="个人资料"
+        android:text="修改密码"
 
         android:textSize="@dimen/item_manage_textsize"
         app:layout_constraintBottom_toTopOf="@id/tv_my_usergroup"
@@ -128,7 +128,7 @@
         android:gravity="center_vertical"
         android:id="@+id/tv_my_usergroup"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_my_userinfo"
+        app:layout_constraintTop_toBottomOf="@id/tv_my_password_change"
         app:layout_constraintBottom_toTopOf="@id/tv_my_settings"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"

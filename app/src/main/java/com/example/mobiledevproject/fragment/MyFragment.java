@@ -1,5 +1,6 @@
 package com.example.mobiledevproject.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.mobiledevproject.R;
+import com.example.mobiledevproject.activity.ChangePasswordActivity;
+import com.example.mobiledevproject.activity.HomeActivity;
 import com.example.mobiledevproject.model.User;
 
 import butterknife.BindView;
@@ -22,7 +25,10 @@ public class MyFragment extends Fragment {
     TextView tvMyUsername;
     @BindView(R.id.tv_my_userdescription)
     TextView tvMyUserdescription;
-
+    @BindView(R.id.tv_my_usergroup)
+    TextView myGroup;
+    @BindView(R.id.tv_my_password_change)
+    TextView changePassword;
     public MyFragment() {
         // Required empty public constructor
     }
@@ -47,6 +53,22 @@ public class MyFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my, container, false);
         ButterKnife.bind(this,view);
         setUserInfo();
+
+        myGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeActivity.bodyVp.setCurrentItem(0);
+            }
+        });
+
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }

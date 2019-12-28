@@ -52,8 +52,8 @@ public class GroupActivity extends AppCompatActivity {
     final static String TAG = "GroupActivity";
     @BindView(R.id.tl_checkin_funcs)
     TabLayout funcsTl;
-    @BindView(R.id.vp_checkin_contents)
-    ViewPager contentsVp;
+//    @BindView(R.id.vp_checkin_contents)
+    public static ViewPager contentsVp;
 
     List<GetFragmentInfo> fragmentList;
 
@@ -79,6 +79,9 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
         ButterKnife.bind(this);
+
+        contentsVp = findViewById(R.id.vp_checkin_contents);
+
         MyApp app = (MyApp) getApplication();
         user = app.getUser();
         groupInit();
