@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.activity.ChangePasswordActivity;
+import com.example.mobiledevproject.activity.FeedbackActivity;
 import com.example.mobiledevproject.activity.HomeActivity;
 import com.example.mobiledevproject.model.User;
 
@@ -29,6 +30,8 @@ public class MyFragment extends Fragment {
     TextView myGroup;
     @BindView(R.id.tv_my_password_change)
     TextView changePassword;
+    @BindView(R.id.tv_my_seedback)
+    TextView feedbackTV;
     public MyFragment() {
         // Required empty public constructor
     }
@@ -65,6 +68,13 @@ public class MyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+        feedbackTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
                 startActivity(intent);
             }
         });

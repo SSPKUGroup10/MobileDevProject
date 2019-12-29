@@ -60,7 +60,18 @@ public class HttpUtil {
         okHttpClient.newCall(request).enqueue(callback);
 
     }
+    public static void putRequestWithToken(String address, String token, String jsonInfo, Callback callback) {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType
+                .parse("application/json; charset=utf-8"), jsonInfo);
+        Request request = new Request.Builder().url(address)
+                .addHeader(WebConfig.TOKEN_KEY, WebConfig.TOKEN_VALUE_PRE + token)
+                .addHeader("Content-Type", "application/json")
+                .put(requestBody)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
 
+    }
     public static void postOkHttpRequestByForm(String address,String token, RequestBody requestBody, Callback callback){
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(address)
@@ -77,6 +88,15 @@ public class HttpUtil {
         Request request = new Request.Builder().url(address)
                 .addHeader(WebConfig.TOKEN_KEY, WebConfig.TOKEN_VALUE_PRE+token)
                 .post(requestBody)
+                .build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+    public static void deleteRequestWithToken(String address, String token, Callback callback){
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(null, "");
+        Request request = new Request.Builder().url(address)
+                .addHeader(WebConfig.TOKEN_KEY, WebConfig.TOKEN_VALUE_PRE+token)
+                .delete(requestBody)
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }

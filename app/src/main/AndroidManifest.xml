@@ -19,7 +19,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ChangePasswordActivity"></activity>
+        <activity android:name=".activity.FeedbackActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity" />
         <activity android:name=".activity.RetrievePwdActivity" />
         <activity android:name=".activity.ServiceAgreementActivity" />
         <activity android:name=".activity.RegisterActivity" />
@@ -34,7 +35,7 @@
         <activity android:name=".activity.GroupActivity" />
         <activity android:name=".activity.DemoActivity" />
         <activity android:name=".activity.CreateGroupActivity" />
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".activity.HomeActivity" />
         <activity android:name=".MainActivity" />
     </application>
 
