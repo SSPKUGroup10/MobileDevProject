@@ -17,10 +17,18 @@ import com.example.mobiledevproject.config.API;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.model.Group;
 import com.example.mobiledevproject.model.GroupCreate;
+import com.example.mobiledevproject.util.HttpUtil;
+import com.example.mobiledevproject.util.StatusCodeUtil;
 import com.example.mobiledevproject.util.Utility;
 import com.google.android.material.card.MaterialCardView;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ListRcvAdapter extends RecyclerView.Adapter<ListRcvAdapter.GroupViewHolder> {
 
@@ -62,13 +70,41 @@ public class ListRcvAdapter extends RecyclerView.Adapter<ListRcvAdapter.GroupVie
                 String url = API.CIRCLE+groupId+"/members/";
                 Log.i(TAG, "onClick: "+url);
                 Group group = new Group(groupSrc);
-//                Log.i(TAG, "onClick: groupid2="+group.getGroupId());
-
                 Log.i(TAG, "onClick: 进入圈子之前："+group.toString());
-                Intent intent = new Intent(context, GroupActivity.class);
-                intent.putExtra("group_info", group);
-                context.startActivity(intent);
 
+                int masterId = group.getMasterId();
+
+                HttpUtil.getRequestWithToken(API.USERINFO + masterId, token, new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+
+                        String responseBody = response.body().string();
+                        Log.i(TAG, "onResponse: " + responseBody);
+
+                        JsonObject jsonObject;
+                        if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
+                            int status = jsonObject.get("status").getAsInt();
+                            if (StatusCodeUtil.isNormalStatus(status)) {
+                                JsonObject data = jsonObject.get("data").getAsJsonObject();
+                                String masterName = data.get("Username").getAsString();
+
+                                Intent intentToGroup = new Intent(context, GroupActivity.class);
+                                intentToGroup.putExtra("group_info", group);
+                                intentToGroup.putExtra("master_name", masterName);
+                                context.startActivity(intentToGroup);
+                            } else  {
+                                Log.i(TAG, "onResponse: " + status);
+                            }
+                        } else {
+                            Log.i(TAG, "onResponse: 响应内容错误");
+                        }
+                    }
+                });
             }
         });
     }

@@ -222,6 +222,8 @@ public class HomeFragment extends Fragment {
     private void initRecycleView() {
         //  定义一个线性布局管理器
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        manager.setStackFromEnd(true);
+        manager.setReverseLayout(true);
         //  将管理器配置给recyclerView
         listRcv.setLayoutManager(manager);
         //  设置adapter

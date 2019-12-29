@@ -73,6 +73,7 @@ public class GroupActivity extends AppCompatActivity {
 
     public Group group;
     public User user;
+    public String masterName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,6 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
-
     public boolean canCheckin() {
 
         String time1 = "2019-12-12 00:10:10";
@@ -206,10 +206,12 @@ public class GroupActivity extends AppCompatActivity {
         }
     }
 
+    //  取出Intent中的信息
     private void groupInit() {
 
         Intent intent = getIntent();
         group = (Group) intent.getSerializableExtra("group_info");
+        masterName = intent.getStringExtra("master_name");
         nameTv.setText(group.getGroupName());
 
 
@@ -284,7 +286,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private void viewPagerInit() {
         fragmentList = new ArrayList<>();
-        fragmentList.add(IntroFragment.newInstance("简介", group));
+        fragmentList.add(IntroFragment.newInstance(masterName, group));
         fragmentList.add(GroupCheckinFragment.newInstance("动态", group));
         fragmentList.add(CircleFragment.newInstance("圈子", group));
         fragmentList.add(ManageFragment.newInstance("管理", "内容"));

@@ -103,8 +103,11 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         Log.i(TAG, "run: 注册成功");
-                                        Intent it_reg_to_login = new Intent(RegisterActivity.this, LoginActivity.class);
-                                        startActivity(it_reg_to_login);
+                                        Intent intentRegToLogin = new Intent();
+                                        intentRegToLogin.putExtra("user_name", info.getUserName());
+                                        intentRegToLogin.putExtra("password", info.getPassword());
+                                        setResult(RESULT_OK, intentRegToLogin);
+                                        finish();
                                     }
                                 });
                             } else {

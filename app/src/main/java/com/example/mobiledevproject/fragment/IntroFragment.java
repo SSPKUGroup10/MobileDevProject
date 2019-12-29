@@ -19,8 +19,7 @@ import butterknife.ButterKnife;
 public class IntroFragment extends Fragment implements GetFragmentInfo {
 
 
-//    Unbinder unbinder;
-    String title;
+    String masterName;
     Group group;
     @BindView(R.id.tv_intro_master)
     TextView tvIntroMaster;
@@ -34,13 +33,12 @@ public class IntroFragment extends Fragment implements GetFragmentInfo {
     private static final String TAG = "IntroFragment";
 
     public IntroFragment() {
-        // Required empty public constructor
     }
 
     //  单例模式
-    public static IntroFragment newInstance(String title, Group info) {
+    public static IntroFragment newInstance(String masterName, Group info) {
         IntroFragment fragment = new IntroFragment();
-        fragment.title = title;
+        fragment.masterName = masterName;
         fragment.group = info;
         return fragment;
     }
@@ -64,7 +62,7 @@ public class IntroFragment extends Fragment implements GetFragmentInfo {
     private void viewInit(){
         Log.i(TAG, "viewInit: "+group.toString());
 
-        tvIntroMaster.setText(Integer.toString(group.getMasterId()));
+        tvIntroMaster.setText(masterName);
         tvIntroDesc.setText(group.getDescription());
         String a = group.getStartAt();
         String b = group.getEndAt();
@@ -79,7 +77,7 @@ public class IntroFragment extends Fragment implements GetFragmentInfo {
 
     @Override
     public String getTitle() {
-        return title;
+        return "简介";
     }
 
     @Override

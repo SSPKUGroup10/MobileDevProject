@@ -213,7 +213,7 @@ token应该创建一个服务来在后台更新，从而避免每次总是进行
 ### MyFragment
 这个界面中可能会修改user信息，修改的时候要相应存储到文件中
 
-### 创建圈子界面
+### 创建圈子界面CreateGroupActivity
 从HomeFragment中点击创建圈子按钮跳转，启动方式为startActivityForResult，Intent中不传递任何信息
 
 文本框：
@@ -222,6 +222,15 @@ token应该创建一个服务来在后台更新，从而避免每次总是进行
 点击创建，发送网络请求，请求需要用到用户信息，圈子信息，token。
 - 圈子信息从当前界面中获得，并在此时进行完整性检查
 - 用户信息从sp中读取。注意读取userid是用于给圈子补充masterId的属性，而不是网络请求的需要
-- token信息从
+- token信息从sp中读取。
 
+创建圈子成功后，从响应信息中拿到groupid并存储，将GroupCreate类存储的圈子信息返回给HomeFragment（key = group_info）
+
+
+### 每一条圈子item
+点击进入圈子界面GroupActivity，通过Intent传递该圈子的基本信息Group类（key = group_info）。
+
+在圈子界面中需要得到Group的基本信息，以及圈主的名字。圈主的名字需要通过masterID发送请求得到。这个请求应该在什么时候发呢。
+
+我决定在跳转之前发送请求获得这个信息，放在Intent中传到下一个活动里。（key = master_name）
 

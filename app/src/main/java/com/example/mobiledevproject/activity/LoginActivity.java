@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                                         storageUserInfo(user, token);
                                         //  intentLoginToHome.putExtra("token", token);
                                         intentLoginToHome.putExtra("user_info", user);
-                                        startActivity(intentLoginToHome);
+                                        startActivityForResult(intentLoginToHome, 2);
                                     }
                                 });
                             } else {
@@ -169,6 +169,22 @@ public class LoginActivity extends AppCompatActivity {
         Utility.setDataList(LoginActivity.this, StorageConfig.SP_KEY_USER_OTHER_CIRCLES, user.getOtherCircles());
 
         Utility.setData(LoginActivity.this, StorageConfig.SP_KEY_TOKEN, token);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    String userName = data.getStringExtra("user_name");
+                    String password = data.getStringExtra("password");
+                    etUsername.setText(userName);
+                    etPassword.setText(password);
+                }
+                break;
+            default:
+        }
     }
 
 
