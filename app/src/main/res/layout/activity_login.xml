@@ -9,7 +9,7 @@
     tools:context=".activity.LoginActivity">
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/password_old_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -39,11 +39,11 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintStart_toEndOf="@+id/tv_username"
+        app:layout_constraintStart_toEndOf="@+id/password_old_tv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_password"
+        android:id="@+id/password_new1_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -52,7 +52,7 @@
         android:text="密码    "
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+        app:layout_constraintTop_toBottomOf="@+id/password_old_tv" />
 
     <EditText
         android:id="@+id/et_password"
@@ -70,7 +70,7 @@
         android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.201"
-        app:layout_constraintStart_toEndOf="@+id/tv_password"
+        app:layout_constraintStart_toEndOf="@+id/password_new1_tv"
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
     <Button

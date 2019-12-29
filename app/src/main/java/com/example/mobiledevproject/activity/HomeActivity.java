@@ -40,8 +40,9 @@ public class HomeActivity extends AppCompatActivity {
     //  添加fragment列表
     List<Fragment> fragList;
 
-    @BindView(R.id.vp_home_body)
-    ViewPager bodyVp;
+//    @BindView(R.id.vp_home_body)
+    public static ViewPager bodyVp;
+
     @BindView(R.id.nav_home_bottom)
     BottomNavigationView bottomBnv;
 
@@ -54,7 +55,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-
         app = (MyApp)getApplication();
 
         //  登录状态检测

@@ -46,8 +46,8 @@ public class RetrievePwdActivity extends AppCompatActivity {
     }
 
     private void viewInit() {
-        et_username = findViewById(R.id.et_username);
-        et_password = findViewById(R.id.et_password);
+        et_username = findViewById(R.id.password_old_et);
+        et_password = findViewById(R.id.passworld_new1_et);
         et_password2 = findViewById(R.id.et_password2);
         bt_submit_retrieve = findViewById(R.id.bt_submit_retrieve);
     }

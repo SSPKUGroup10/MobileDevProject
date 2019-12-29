@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         viewSetOnClick();
     }
 
+
     private void viewSetOnClick() {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();

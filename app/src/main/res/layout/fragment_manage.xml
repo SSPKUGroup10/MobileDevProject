@@ -52,38 +52,6 @@
         app:layout_constraintVertical_chainStyle="packed"
         />
 
-
-    <TextView
-
-        android:layout_width="0dp"
-        android:drawableLeft="@drawable/ic_settings_black_24dp"
-        android:drawablePadding="10dp"
-        android:text="修改设置"
-        android:layout_height="@dimen/edittext_height"
-        android:layout_marginBottom="@dimen/item_interval"
-        android:textSize="@dimen/item_manage_textsize"
-        android:id="@+id/tv_manage_settings"
-
-        app:layout_constraintTop_toBottomOf="@id/tv_manage_calendar"
-        app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
-        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-        />
-
-    <TextView
-        android:layout_width="0dp"
-        android:drawableLeft="@drawable/ic_group_add_black_24dp"
-        android:drawablePadding="10dp"
-        android:text="邀请成员"
-        android:layout_height="@dimen/edittext_height"
-        android:layout_marginBottom="@dimen/item_interval"
-        android:textSize="@dimen/item_manage_textsize"
-        android:id="@+id/tv_manage_invite"
-
-        app:layout_constraintTop_toBottomOf="@id/tv_manage_settings"
-        app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
-        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-        />
-
     <TextView
         android:layout_width="0dp"
         android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
@@ -94,7 +62,7 @@
         android:textSize="@dimen/item_manage_textsize"
         android:id="@+id/tv_manage_exit"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_manage_invite"
+        app:layout_constraintTop_toBottomOf="@id/tv_manage_calendar"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         />
