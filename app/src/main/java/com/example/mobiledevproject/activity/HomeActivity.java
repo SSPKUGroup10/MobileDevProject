@@ -54,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+
         app = (MyApp)getApplication();
 
         //  登录状态检测
@@ -82,13 +83,12 @@ public class HomeActivity extends AppCompatActivity {
         //  从intent中读取数据
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra("user_info");
-        StorageConfig.SP_NAME = user.getUserName();
-        String token = intent.getStringExtra("token");
+//        StorageConfig.SP_NAME = user.getUserName();
+//        String token = intent.getStringExtra("token");
 
         app.setUser(user);
-        app.setToken(token);
-        Utility.setData(HomeActivity.this, StorageConfig.SP_KEY_TOKEN, token);
-        Utility.setDataList(HomeActivity.this, StorageConfig.SP_KEY_GROUP_LIST, user.getJoinedCircles());
+        app.setToken(Utility.getData(HomeActivity.this, StorageConfig.SP_KEY_TOKEN));
+
     }
 
 

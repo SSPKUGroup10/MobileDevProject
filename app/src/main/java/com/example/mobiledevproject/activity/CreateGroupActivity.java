@@ -3,8 +3,6 @@ package com.example.mobiledevproject.activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +19,6 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.config.API;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.model.GroupCreate;
-import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.model.UserCreate;
 import com.example.mobiledevproject.util.HttpUtil;
 import com.example.mobiledevproject.util.StatusCodeUtil;
@@ -73,6 +70,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         ButterKnife.bind(this);
+
         calendar = Calendar.getInstance();
         viewSetOnClick();
     }
@@ -102,8 +100,6 @@ public class CreateGroupActivity extends AppCompatActivity {
                 new TimePickerDialog(CreateGroupActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Log.i(TAG, "onClick: " + hourOfDay);
-                        Log.i(TAG, "onClick: " + minute);
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
                         tvCgStartat.setText(sdf.format(calendar.getTime()));
@@ -121,8 +117,6 @@ public class CreateGroupActivity extends AppCompatActivity {
                 new TimePickerDialog(CreateGroupActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        Log.i(TAG, "onClick: " + hourOfDay);
-                        Log.i(TAG, "onClick: " + minute);
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
                         tvCgEndat.setText(sdf.format(calendar.getTime()));
@@ -134,22 +128,28 @@ public class CreateGroupActivity extends AppCompatActivity {
         btnCgCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson gsonEx = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                Intent intentFromHome = getIntent();
-                GroupCreate groupSrc = getCreateInfo();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+//                Intent intentFromHome = getIntent();
+                GroupCreate groupCreate = getCreateInfo();
 
-                if(!groupSrc.isCompleted()){
+                //  信息不全不能创建
+                if(!groupCreate.isCompleted()){
                     Toast.makeText(CreateGroupActivity.this, "请补全相关信息！", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //  user信息用于给group添加masterId，并且在需要token的时候用user信息来重新申请
-                User userSrc = (User) intentFromHome.getSerializableExtra("user");
-                UserCreate user = new UserCreate(userSrc);
+                //  不从HomeFragment中传递user，这样在HomeFrag中就不用长时间维护user信息。即用即取。
+//                User userSrc = (User) intentFromHome.getSerializableExtra("user");
+                UserCreate userCreate = new UserCreate();
+                userCreate.setUserName(Utility.getData(CreateGroupActivity.this, StorageConfig.SP_KEY_USER_NAME));
+                userCreate.setPassword(Utility.getData(CreateGroupActivity.this, StorageConfig.SP_KEY_PASSWORD));
+                userCreate.setUserId(Utility.getIntData(CreateGroupActivity.this, StorageConfig.SP_KEY_USER_ID));
 
-                groupSrc.setMasterId(user.getUserId());
-                String groupInfo = gsonEx.toJson(groupSrc);
-                String userInfo = gsonEx.toJson(user);
+                groupCreate.setMasterId(userCreate.getUserId());
+
+                String groupInfo = gson.toJson(groupCreate);
+                String userInfo = gson.toJson(userCreate);
                 String token = Utility.getData(CreateGroupActivity.this, StorageConfig.SP_KEY_TOKEN);
 
                 Log.i(TAG, "onClick: " + groupInfo);
@@ -167,29 +167,23 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                         String responseBody = response.body().string();
                         Log.i(TAG, "onResponse: " + responseBody);
-                        System.out.println("=====================");
-                        System.out.println(responseBody);
+
                         JsonObject jsonObject;
                         if ((jsonObject = StatusCodeUtil.isNormalResponse(responseBody)) != null) {
                             int status = jsonObject.get("status").getAsInt();
                             if (StatusCodeUtil.isNormalStatus(status)) {
-                                JsonObject data = jsonObject.get("data").getAsJsonArray().get(0).getAsJsonObject();
+                                JsonObject data = jsonObject.get("data").getAsJsonObject();
                                 int groupId = data.get("id").getAsInt();
-                                groupSrc.setGroupId(groupId);
+                                groupCreate.setGroupId(groupId);
 
                                 Log.i(TAG, "onResponse: 圈子已创建");
                                 Log.i(TAG, "onResponse: " + groupId);
 
-
                                 Intent intentBackHome = new Intent();
-                                intentBackHome.putExtra("group_info", groupSrc);
+                                intentBackHome.putExtra("group_info", groupCreate);
                                 setResult(RESULT_OK, intentBackHome);
                                 finish();
-                            } else if (StatusCodeUtil.isTokenError(status)) {
-                                //  重新申请一下token
-                                Log.i(TAG, "onResponse: " + "token失效");
-                                HttpUtil.getToken(user, handler);
-                            } else {
+                            } else  {
                                 Log.i(TAG, "onResponse: " + status);
                             }
                         } else {
@@ -201,43 +195,16 @@ public class CreateGroupActivity extends AppCompatActivity {
         });
     }
 
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case -1:
-                    Log.i(TAG, "handleMessage: " + (String) msg.obj);
-                    break;
-                case 1:
-                    String token = (String) msg.obj;
-                    Log.i(TAG, "handleMessage: " + token);
-                    Log.i(TAG, "handleMessage: token已更新");
-                    updateToken(token);
-                    break;
-            }
-        }
-    };
-
-    public void updateToken(String token) {
-        Utility.setData(CreateGroupActivity.this, StorageConfig.SP_KEY_TOKEN, token);
-    }
-
     private GroupCreate getCreateInfo() {
         GroupCreate groupCreate = new GroupCreate();
         groupCreate.setGroupName(etCgName.getText().toString());
         groupCreate.setType(type);
         groupCreate.setDescription(etCgDescription.getText().toString());
         groupCreate.setCheckRule(etCgRule.getText().toString());
-        //  静态数据
-//        groupCreate.setStartAt("2020-10-24 11:11:11");
-//        groupCreate.setEndAt("2020-10-24 11:11:11");
-
         String startAtFmt = ("1970-00-00 "+tvCgStartat.getText()+":00");
         String endAtFmt = ("1970-00-00 "+tvCgEndat.getText()+":00");
-
         groupCreate.setStartAt(startAtFmt);
         groupCreate.setEndAt(endAtFmt);
         return groupCreate;
     }
-
 }

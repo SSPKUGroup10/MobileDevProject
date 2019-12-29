@@ -17,10 +17,8 @@ public class GroupCreate implements Serializable {
     @Expose
     private String type;
     @Expose
-//    @SerializedName("startAtDesc")
     private String startAt;
     @Expose
-//    @SerializedName("endAtDesc")
     private String endAt;
 
     @Expose

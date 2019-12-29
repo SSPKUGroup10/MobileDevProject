@@ -258,6 +258,8 @@ public class GroupActivity extends AppCompatActivity {
                         Log.i(TAG, "onResponse: 成员人数"+members.size());
                         group.setMemberList(members);
 
+                        //  修改当前用户的
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

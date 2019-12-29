@@ -19,6 +19,7 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.activity.CreateGroupActivity;
 import com.example.mobiledevproject.adapter.ListRcvAdapter;
 import com.example.mobiledevproject.config.API;
+import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.model.GroupCreate;
 import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.model.UserCreate;
@@ -65,9 +66,16 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
     }
 
+    //  好像用不到这个参数了
     public static HomeFragment newInstance(User user) {
         HomeFragment fragment = new HomeFragment();
         fragment.user = user;
+        return fragment;
+    }
+
+    //  纯净版创建
+    public static HomeFragment newInstance() {
+        HomeFragment fragment = new HomeFragment();
         return fragment;
     }
 
@@ -88,22 +96,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.i(TAG, "onActivityCreated: 进行界面初始化");
         dataInit();
-        initRecycleView();
         viewSetOnClick();
 
     }
 
+    //  刷新的逻辑，其他地方更新存储在文件中的圈子列表，这里总是读取文件中的圈子列表
     private void dataInit() {
-
-//        if (Utility.hasSpItem(getContext(), SP_GROUP_LIST_KEY)) {
-//            infoList = Utility.getDataList(getContext(), SP_GROUP_LIST_KEY, GroupCreate.class);
-//        } else {
-            //  从User中读取信息
-            infoList = user.getJoinedCircles();
-//            Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, infoList);
-//        }
+        if(infoList!=null){
+            infoList.clear();
+        }
+        infoList = Utility.getDataList(getContext(), StorageConfig.SP_KEY_USER_JOINED_CIRCLES, GroupCreate.class);
+        initRecycleView();
     }
 
     private void viewSetOnClick() {
@@ -112,7 +117,8 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Log.i(TAG, "onClick: 创建一个圈子");
                 Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-                intent.putExtra("user", user);
+                //  不需要传递user数据了
+//                intent.putExtra("user", user);
                 startActivityForResult(intent, 1);
             }
         });
@@ -125,12 +131,19 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //  访问网络加载新的圈子信息并存储下来，然后执行datainit方法。
     private void refreshCircleInfo(){
 
-        UserCreate info = new UserCreate(user);
+        Log.i(TAG, "refreshCircleInfo: 开始刷新列表");
+
+        UserCreate userCreate = new UserCreate();
+        userCreate.setUserName(Utility.getData(getContext(), StorageConfig.SP_KEY_USER_NAME));
+        userCreate.setPassword(Utility.getData(getContext(), StorageConfig.SP_KEY_PASSWORD));
+
         //上传json格式数据
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String jsonInfo = gson.toJson(info);
+        String jsonInfo = gson.toJson(userCreate);
+        
         HttpUtil.postOkHttpRequest(API.LOGIN, jsonInfo, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -148,58 +161,49 @@ public class HomeFragment extends Fragment {
                     int status = jsonObject.get("status").getAsInt();
                     if (StatusCodeUtil.isNormalStatus(status)) {
                         //  正确
-                                JsonObject data = jsonObject.get("data").getAsJsonObject();
-                                String token = data.get("accessToken").getAsString();
-                                int userID = data.get("userID").getAsInt();
+                        JsonObject data = jsonObject.get("data").getAsJsonObject();
+                        String token = data.get("accessToken").getAsString();
+                        int userID = data.get("userID").getAsInt();
 
-                                info.setUserId(userID);
-                                User newUser = new User(info);
+                        userCreate.setUserId(userID);
+                        User newUser = new User(userCreate);
 
-                                JsonArray joinedCircles = data.get("joinedCircles").getAsJsonArray();
-                                JsonArray otherCircles = data.get("otherCircles").getAsJsonArray();
+                        JsonArray joinedCircles = data.get("joinedCircles").getAsJsonArray();
+                        JsonArray otherCircles = data.get("otherCircles").getAsJsonArray();
 
-                                for(JsonElement group : joinedCircles){
-                                    JsonObject cur = group.getAsJsonObject();
-                                    GroupCreate createdGroup = new GroupCreate();
-                                    createdGroup.setGroupName(cur.get("name").getAsString());
-                                    createdGroup.setDescription(cur.get("desc").getAsString());
-                                    createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-                                    createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-                                    createdGroup.setStartAt(cur.get("startAt").getAsString());
-                                    createdGroup.setEndAt(cur.get("endAt").getAsString());
-                                    createdGroup.setType(cur.get("type").getAsString());
-                                    createdGroup.setGroupId(cur.get("id").getAsInt());
-                                    newUser.getJoinedCircles().add(createdGroup);
-                                }
+                        //  加载圈子列表
+                        for (JsonElement group : joinedCircles) {
+                            JsonObject cur = group.getAsJsonObject();
+                            newUser.getJoinedCircles().add(Utility.setGroupInfo(cur));
+                        }
+                        for (JsonElement group : otherCircles) {
+                            JsonObject cur = group.getAsJsonObject();
+                            newUser.getOtherCircles().add(Utility.setGroupInfo(cur));
+                        }
 
-                                for(JsonElement group : otherCircles){
-                                    JsonObject cur = group.getAsJsonObject();
-                                    GroupCreate createdGroup = new GroupCreate();
-                                    createdGroup.setGroupName(cur.get("name").getAsString());
-                                    createdGroup.setDescription(cur.get("desc").getAsString());
-                                    createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-                                    createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-                                    createdGroup.setStartAt(cur.get("startAt").getAsString());
-                                    createdGroup.setEndAt(cur.get("endAt").getAsString());
-                                    createdGroup.setType(cur.get("type").getAsString());
-                                    createdGroup.setGroupId(cur.get("id").getAsInt());
-                                    newUser.getOtherCircles().add(createdGroup);
-//                                            Utility.setData(HomeActivity.this, StorageConfig.SP_KEY_TOKEN, token);
-                                }
+                        Log.i(TAG, "onResponse: 圈子列表加载完毕，加入的圈子个数为"+newUser.getJoinedCircles().size());
 
-                                Log.i(TAG, "run: "+newUser.toString());
-                                user = newUser;
+                        Utility.setDataList(getContext(), StorageConfig.SP_KEY_USER_JOINED_CIRCLES, newUser.getJoinedCircles());
 
-
-//                        Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, user.getJoinedCircles());
+                        Log.i(TAG, "run: "+newUser.toString());
+//                        user = newUser;
                         Log.i(TAG, "onResponse: 刷新完成");
-                        dataInit();
-                        srlHomeFragmentRefresh.setRefreshing(false);
+
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dataInit();
+                                adapter.notifyDataSetChanged();
+                                srlHomeFragmentRefresh.setRefreshing(false);
+                            }
+                        });
                     } else {
                         Log.i(TAG, "onResponse: " + status);
+                        srlHomeFragmentRefresh.setRefreshing(false);
                     }
                 } else {
                     Log.i(TAG, "onResponse: 响应内容错误");
+                    srlHomeFragmentRefresh.setRefreshing(false);
                 }
             }
         });
@@ -209,7 +213,7 @@ public class HomeFragment extends Fragment {
     private void addGroupItem(GroupCreate createdGroup) {
         adapter.addData(createdGroup, infoList.size());
         //  每次创建后都更新一下本地存储的内容
-        Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, infoList);
+//        Utility.setDataList(getContext(), SP_GROUP_LIST_KEY, infoList);
 
         Log.i(TAG, "addGroupItem: add an item");
         Log.i(TAG, "addGroupItem: list size " + infoList.size());
@@ -234,11 +238,15 @@ public class HomeFragment extends Fragment {
         switch (requestCode) {
             case 1:
                 if (resultCode == getActivity().RESULT_OK) {
-                    GroupCreate createdGroup = (GroupCreate) data.getSerializableExtra("group_info");
-                    Log.i(TAG, "onActivityResult: " + createdGroup.toString());
+                    GroupCreate groupCreate = (GroupCreate) data.getSerializableExtra("group_info");
+                    Log.i(TAG, "onActivityResult: " + groupCreate.toString());
                     //  新圈子信息添加到列表
-                    addGroupItem(createdGroup);
-                    //  刷新界面
+                    addGroupItem(groupCreate);
+                    //  存储到本地文件中
+                    List<GroupCreate> addedList = Utility.getDataList(getContext(), StorageConfig.SP_KEY_USER_JOINED_CIRCLES, GroupCreate.class);
+                    addedList.add(groupCreate);
+                    Utility.setDataList(getContext(), StorageConfig.SP_KEY_USER_JOINED_CIRCLES, addedList);
+
                     //  刷新的方法写在adapter中了
                 }
                 break;

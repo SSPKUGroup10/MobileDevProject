@@ -56,6 +56,7 @@ public class HttpUtil {
         Request request = new Request.Builder().url(address)
                 .addHeader(WebConfig.TOKEN_KEY, WebConfig.TOKEN_VALUE_PRE + token)
                 .addHeader("Content-Type", "application/json")
+                .post(requestBody)
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
 

@@ -14,11 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.config.API;
-import com.example.mobiledevproject.model.GroupCreate;
+import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.model.User;
 import com.example.mobiledevproject.model.UserCreate;
 import com.example.mobiledevproject.util.HttpUtil;
 import com.example.mobiledevproject.util.StatusCodeUtil;
+import com.example.mobiledevproject.util.Utility;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        sp = this.getSharedPreferences("init_config", MODE_PRIVATE);
+//        sp = this.getSharedPreferences("init_config", MODE_PRIVATE);
         viewSetOnClick();
     }
 
@@ -82,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intentLoginToRetrievePassword = new Intent(LoginActivity.this, RetrievePwdActivity.class);
                 startActivity(intentLoginToRetrievePassword);
             }
-
         });
 
 
@@ -121,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent intentLoginToHome = new Intent(LoginActivity.this, HomeActivity.class);
 
                                         JsonObject data = jsonObject.get("data").getAsJsonObject();
-
                                         String token = data.get("accessToken").getAsString();
                                         int userID = data.get("userID").getAsInt();
                                         info.setUserId(userID);
@@ -134,14 +133,16 @@ public class LoginActivity extends AppCompatActivity {
                                         //  加载圈子列表
                                         for (JsonElement group : joinedCircles) {
                                             JsonObject cur = group.getAsJsonObject();
-                                            user.getJoinedCircles().add(setGroupInfo(cur));
+                                            user.getJoinedCircles().add(Utility.setGroupInfo(cur));
                                         }
                                         for (JsonElement group : otherCircles) {
                                             JsonObject cur = group.getAsJsonObject();
-                                            user.getOtherCircles().add(setGroupInfo(cur));
+                                            user.getOtherCircles().add(Utility.setGroupInfo(cur));
                                         }
 
-                                        intentLoginToHome.putExtra("token", token);
+                                        //  信息存储，这样就不用传输了
+                                        storageUserInfo(user, token);
+                                        //  intentLoginToHome.putExtra("token", token);
                                         intentLoginToHome.putExtra("user_info", user);
                                         startActivity(intentLoginToHome);
                                     }
@@ -158,18 +159,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private GroupCreate setGroupInfo(JsonObject cur) {
-        GroupCreate createdGroup = new GroupCreate();
-        createdGroup.setGroupName(cur.get("name").getAsString());
-        createdGroup.setDescription(cur.get("desc").getAsString());
-        createdGroup.setCheckRule(cur.get("checkRule").getAsString());
-        createdGroup.setMasterId(cur.get("circleMasterId").getAsInt());
-        createdGroup.setStartAt(cur.get("startAt").getAsString());
-        createdGroup.setEndAt(cur.get("endAt").getAsString());
-        createdGroup.setType(cur.get("type").getAsString());
-        createdGroup.setGroupId(cur.get("id").getAsInt());
-        return createdGroup;
+    private void storageUserInfo(User user, String token){
+        StorageConfig.SP_NAME = user.getUserName();
+
+        Utility.setData(LoginActivity.this, StorageConfig.SP_KEY_USER_NAME, user.getUserName());
+        Utility.setData(LoginActivity.this, StorageConfig.SP_KEY_USER_ID, user.getUserId());
+        Utility.setData(LoginActivity.this, StorageConfig.SP_KEY_PASSWORD, user.getPassword());
+        Utility.setDataList(LoginActivity.this, StorageConfig.SP_KEY_USER_JOINED_CIRCLES, user.getJoinedCircles());
+        Utility.setDataList(LoginActivity.this, StorageConfig.SP_KEY_USER_OTHER_CIRCLES, user.getOtherCircles());
+
+        Utility.setData(LoginActivity.this, StorageConfig.SP_KEY_TOKEN, token);
     }
+
+
 
 
     private UserCreate getUserInfo() {
