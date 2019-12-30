@@ -2,7 +2,6 @@ package com.example.mobiledevproject.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.activity.GroupActivity;
 import com.example.mobiledevproject.activity.HomeActivity;
-import com.example.mobiledevproject.config.API;
 import com.example.mobiledevproject.config.StorageConfig;
 import com.example.mobiledevproject.interfaces.GetFragmentInfo;
 import com.example.mobiledevproject.model.Group;
@@ -114,6 +112,7 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
                 Intent intent = new Intent(getActivity(),HomeActivity.class);
                 intent.putExtra("user_info",user);
                 startActivity(intent);
+                getActivity().finish();
             }
 
         });

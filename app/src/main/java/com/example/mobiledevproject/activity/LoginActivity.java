@@ -69,11 +69,11 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         //跳转到注册页面
-        tvForgetPassword.setOnClickListener(new View.OnClickListener() {
+        tvToRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentLoginToRegister = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intentLoginToRegister);
+                startActivityForResult(intentLoginToRegister, 2);
             }
         });
 
@@ -143,9 +143,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                         //  信息存储，这样就不用传输了
                                         storageUserInfo(user, token);
-                                        //  intentLoginToHome.putExtra("token", token);
                                         intentLoginToHome.putExtra("user_info", user);
-                                        startActivityForResult(intentLoginToHome, 2);
+                                        startActivity(intentLoginToHome);
                                     }
                                 });
                             } else {

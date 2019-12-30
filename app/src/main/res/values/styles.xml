@@ -26,6 +26,15 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <style name="DialogFull">
+        <item name="android:windowFullscreen">true</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- activity变暗 -->
+        <item name="android:backgroundDimEnabled">true</item>
+
+    </style>
+
 
 
 </resources>

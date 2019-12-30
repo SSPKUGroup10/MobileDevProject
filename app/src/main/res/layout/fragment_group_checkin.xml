@@ -6,14 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragment.GroupCheckinFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="打卡情况界面"
-        android:textAlignment="center"
-        android:id="@+id/tv_group_checkin_content"
-        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/group_message_rv"
         android:layout_width="match_parent"

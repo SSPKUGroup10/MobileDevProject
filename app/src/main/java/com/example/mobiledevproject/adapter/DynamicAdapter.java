@@ -76,7 +76,10 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.ViewHold
             content = itemView.findViewById(R.id.dynamic_content_tv);
             images = itemView.findViewById(R.id.dynamic_images_gv);
             time = itemView.findViewById(R.id.dynamic_time_tv);
-        }
-    }
 
+
+        }
+
+
+    }
 }

@@ -57,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         app = (MyApp)getApplication();
 
+        bodyVp = findViewById(R.id.vp_home_body);
+
         //  登录状态检测
 //        logon();
         //  用户信息初始化

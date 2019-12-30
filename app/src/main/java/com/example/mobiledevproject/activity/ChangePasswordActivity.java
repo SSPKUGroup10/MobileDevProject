@@ -1,13 +1,13 @@
 package com.example.mobiledevproject.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mobiledevproject.MyApp;
 import com.example.mobiledevproject.R;
@@ -56,6 +56,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 if (oldPassword == null || oldPassword == "" || newPassword1 == null || newPassword1 == "" || newPassword2 == null || newPassword2 == "") {
                     Toast.makeText(v.getContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
                 } else if (newPassword1.equals(newPassword2)) {
+
                     if (checkOldPassword()) {
                         final boolean []flag ={false};
                         MyApp app = (MyApp) getApplication();
@@ -78,6 +79,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 System.out.println(responseBody);
                                 flag[0]=true;
 
+                                //  密码更新成功,存入sp
+                                Utility.setData(ChangePasswordActivity.this, StorageConfig.SP_KEY_PASSWORD, newPassword1);
                             }
                         });
                         while(!flag[0]){
@@ -98,13 +101,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     Toast.makeText(v.getContext(), "两次密码输入不一样", Toast.LENGTH_SHORT).show();
                 }
 
-
             }
         });
     }
     public boolean checkOldPassword(){
         String oldPassword = passwordOldET.getText().toString();
 
-        return true;
+        if(oldPassword.equals(Utility.getData(ChangePasswordActivity.this, StorageConfig.SP_KEY_PASSWORD))){
+            return true;
+        } return false;
     }
 }

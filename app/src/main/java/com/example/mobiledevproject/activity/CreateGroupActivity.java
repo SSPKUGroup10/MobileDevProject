@@ -90,6 +90,41 @@ public class CreateGroupActivity extends AppCompatActivity {
             }
         });
 
+        tvCgStartat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+                new TimePickerDialog(CreateGroupActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        tvCgStartat.setText(sdf.format(calendar.getTime()));
+                    }
+                }, hour, minute, true).show();
+            }
+        });
+
+        //  选择结束时间
+        tvCgEndat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
+                new TimePickerDialog(CreateGroupActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        calendar.set(Calendar.MINUTE, minute);
+                        tvCgEndat.setText(sdf.format(calendar.getTime()));
+                    }
+                }, hour, minute, true).show();
+            }
+        });
+
         //  选择开始时间
         btnCgStartat.setOnClickListener(new View.OnClickListener() {
             @Override

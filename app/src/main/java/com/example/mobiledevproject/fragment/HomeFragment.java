@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
+        viewSetOnClick();
         return view;
     }
 
@@ -97,9 +98,15 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.i(TAG, "onActivityCreated: 进行界面初始化");
-        dataInit();
-        viewSetOnClick();
+//        dataInit();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "onActivityCreated: 进行界面初始化");
+        srlHomeFragmentRefresh.setRefreshing(true);
+        refreshCircleInfo();
     }
 
     //  刷新的逻辑，其他地方更新存储在文件中的圈子列表，这里总是读取文件中的圈子列表
