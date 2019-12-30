@@ -77,14 +77,16 @@
             <EditText
 
                 style="@style/InputBoxStyle"
-                android:gravity="center"
                 android:hint="小组名字"
+
                 android:id="@+id/et_cg_name"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/edittext_height"
                 android:singleLine="true"
                 android:maxEms="10"
                 android:ellipsize="end"
+
+                android:paddingLeft="@dimen/edittext_padding_left"
 
                 app:layout_constraintLeft_toRightOf="@id/vgl_divide_btn_tvr"
                 app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
@@ -107,6 +109,8 @@
             <EditText
                 style="@style/InputBoxStyle"
                 android:hint="小组描述"
+                android:paddingLeft="@dimen/edittext_padding_left"
+
                 android:layout_width="0dp"
                 android:layout_height="96dp"
                 android:layout_marginTop="@dimen/item_interval"
@@ -131,6 +135,8 @@
             <EditText
                 style="@style/InputBoxStyle"
                 android:hint="小组规则"
+                android:paddingLeft="@dimen/edittext_padding_left"
+
                 android:layout_width="0dp"
                 android:layout_height="96dp"
                 android:layout_marginTop="@dimen/item_interval"
@@ -229,7 +235,9 @@
                 android:layout_marginTop="@dimen/item_interval"
                 android:text="提交"
 
+
                 app:layout_constraintTop_toBottomOf="@id/spin_cg_type"
+                app:layout_constraintBottom_toTopOf="@id/hgl_0.90"
                 app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
                 app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
                 />

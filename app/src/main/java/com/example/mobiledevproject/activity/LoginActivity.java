@@ -149,9 +149,21 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                             } else {
                                 Log.i(TAG, "onResponse: " + status);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         } else {
                             Log.i(TAG, "onResponse: 响应内容错误");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     }
                 });

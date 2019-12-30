@@ -72,6 +72,7 @@
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }
+
 ```
 - 后面又出现了在请求头中写入内容的需求，方法是requestbody调用addHeader(key, value)方法。
 - 异步请求中不能访问主线程中的变量，但是事实上很多时候需要用到的变量都可以在子线程（onResponse和onFailure）中定义，需要在主线程中进行ui操作的功能再调用runOnUiThread方法。

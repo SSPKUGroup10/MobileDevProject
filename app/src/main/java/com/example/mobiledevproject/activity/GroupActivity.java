@@ -104,7 +104,10 @@ public class GroupActivity extends AppCompatActivity {
 
     private void hasJoined(){
         Log.i(TAG, "hasJoined: 已加入");
+        //  修改按钮样式
         btnJoinin.setText("已加入");
+        btnJoinin.setTextColor(getResources().getColor(R.color.textgrey));
+
 //        contentFresh();
         checkinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +158,7 @@ public class GroupActivity extends AppCompatActivity {
         });
     }
 
+    //  判断是否在打卡时间内
     public boolean canCheckin() {
 
         String time1 = "2019-12-12 00:10:10";
@@ -303,14 +307,5 @@ public class GroupActivity extends AppCompatActivity {
         memberNumTv.setText("成员" + group.getMemberList().size() + "人");
     }
 
-//    @Override
-//    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
-//        super.onSaveInstanceState(savedInstanceState);
-//
-//        Log.i(TAG, "onSaveInstanceState: 已经保存");
-//
-//        savedInstanceState.putSerializable(STATE_GROUP, group);
-//        savedInstanceState.putSerializable(STATE_USER, user);
-//    }
 
 }

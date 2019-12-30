@@ -69,6 +69,7 @@ public class IntroFragment extends Fragment implements GetFragmentInfo {
         a = a.split(" ")[1];
         b = b.split(" ")[1];
 
+
         String seTime = a+"~"+b;
         tvIntroTime.setText(seTime);
         tvIntroRule.setText(group.getCheckRule());

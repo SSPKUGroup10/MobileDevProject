@@ -164,6 +164,7 @@ public class CheckinActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         imageGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -250,7 +251,8 @@ public class CheckinActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
-                JsonObject jsonObject = new JsonParser().parse(response.body().string()).getAsJsonObject();
+                String responseBody = response.body().string();
+                JsonObject jsonObject = new JsonParser().parse(responseBody).getAsJsonObject();
 
                 System.out.println(jsonObject);
 

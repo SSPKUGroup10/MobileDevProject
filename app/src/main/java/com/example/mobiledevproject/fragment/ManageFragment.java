@@ -23,6 +23,7 @@ import com.example.mobiledevproject.util.Utility;
 
 import java.io.IOException;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.Call;
@@ -36,6 +37,12 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
     Group group;
     TextView checkinCalendar;
     TextView exitGroup;
+
+
+    @BindView(R.id.tv_manage_today)
+    TextView tvManageToday;
+    @BindView(R.id.tv_manage_rule)
+    TextView tvManageRule;
 
     public ManageFragment() {
     }
@@ -69,10 +76,26 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
         super.onStart();
         checkinCalendar = getActivity().findViewById(R.id.tv_manage_calendar);
         exitGroup = getActivity().findViewById(R.id.tv_manage_exit);
+
+
         checkinCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GroupActivity.contentsVp.setCurrentItem(1);
+            }
+        });
+
+        tvManageToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GroupActivity.contentsVp.setCurrentItem(2);
+            }
+        });
+
+        tvManageRule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GroupActivity.contentsVp.setCurrentItem(0);
             }
         });
 
@@ -85,7 +108,7 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
                 String userId = String.valueOf(user.getUserId());
                 String token = Utility.getData(getActivity(), StorageConfig.SP_KEY_TOKEN);
                 int groupId = group.getGroupId();
-                String url = "http://172.81.215.104/api/v1/circles/"+groupId+"/members/";
+                String url = "http://172.81.215.104/api/v1/circles/" + groupId + "/members/";
                 System.out.println(url);
 
                 HttpUtil.deleteRequestWithToken(url, token, new Callback() {
@@ -101,7 +124,7 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
 
                     }
                 });
-                while(!flag[0]){
+                while (!flag[0]) {
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -109,8 +132,8 @@ public class ManageFragment extends Fragment implements GetFragmentInfo {
                     }
                 }
                 Toast.makeText(v.getContext(), "退出圈子成功", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(),HomeActivity.class);
-                intent.putExtra("user_info",user);
+                Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.putExtra("user_info", user);
                 startActivity(intent);
                 getActivity().finish();
             }

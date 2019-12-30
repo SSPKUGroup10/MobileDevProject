@@ -45,7 +45,9 @@
                 android:textSize="16dp"
                 android:background="@color/buttonYellow"
                 android:layout_marginBottom="3dp"
-                android:gravity="center"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="@dimen/edittext_padding_left"
+
 
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -54,11 +56,12 @@
             <GridView
                 android:id="@+id/circle_has_checkin_gv"
                 android:layout_width="0dp"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:numColumns="4"
                 android:layout_marginTop="@dimen/item_interval"
                 app:layout_constraintTop_toBottomOf="@id/circle_checkin_tv"
+                app:layout_constraintBottom_toTopOf="@id/circle_not_checkin_tv"
                 app:layout_constraintLeft_toRightOf="@id/hgl_left_border"
                 app:layout_constraintRight_toLeftOf="@id/hgl_right_border"
                 />
@@ -68,11 +71,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:text="今日未打卡"
+                android:paddingLeft="@dimen/edittext_padding_left"
+
                 android:textSize="16dp"
                 android:background="@color/buttonYellow"
                 android:layout_marginBottom="3dp"
-                android:gravity="center"
-
+                android:gravity="center_vertical|left"
 
                 app:layout_constraintTop_toBottomOf="@id/circle_has_checkin_gv"
                 app:layout_constraintLeft_toRightOf="parent"
@@ -81,7 +85,7 @@
             <GridView
                 android:id="@+id/circle_hasnot_checkin_gv"
                 android:layout_width="0dp"
-                android:layout_height="140dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
                 android:numColumns="4"
                 android:layout_marginTop="@dimen/item_interval"

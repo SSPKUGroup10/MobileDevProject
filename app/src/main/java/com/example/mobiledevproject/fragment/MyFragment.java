@@ -13,6 +13,7 @@ import com.example.mobiledevproject.R;
 import com.example.mobiledevproject.activity.ChangePasswordActivity;
 import com.example.mobiledevproject.activity.FeedbackActivity;
 import com.example.mobiledevproject.activity.HomeActivity;
+import com.example.mobiledevproject.activity.LoginActivity;
 import com.example.mobiledevproject.model.User;
 
 import butterknife.BindView;
@@ -32,6 +33,9 @@ public class MyFragment extends Fragment {
     TextView changePassword;
     @BindView(R.id.tv_my_seedback)
     TextView feedbackTV;
+    @BindView(R.id.tv_my_settings)
+    TextView exitTv;
+
     public MyFragment() {
         // Required empty public constructor
     }
@@ -78,6 +82,15 @@ public class MyFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        exitTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
 
 
         return view;

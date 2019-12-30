@@ -9,11 +9,10 @@
     </style>
 
     <style name="InputBoxStyle">
-        <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:layout_marginRight">0dp</item>
+        <item name="android:paddingLeft">@dimen/edittext_padding_left</item>
         <item name="android:background">@drawable/border_input_box</item>
-        <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
@@ -27,7 +26,7 @@
     </style>
 
     <style name="DialogFull">
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
         <!-- 背景透明 -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!-- activity变暗 -->

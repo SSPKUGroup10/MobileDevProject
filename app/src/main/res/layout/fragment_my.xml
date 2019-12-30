@@ -24,6 +24,14 @@
         app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/hgl_0.2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/hgl_0.75"
@@ -38,8 +46,18 @@
         android:id="@+id/vgl_0.75"
 
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.45"
+        app:layout_constraintGuide_percent="0.25"
         />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/hgl_0.15"
+
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10"
+        />
+
     <!--margin left-->
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="0dp"
@@ -64,6 +82,8 @@
         android:id="@+id/iv_my_userimage"
         android:src="@drawable/ic_group_logo"
 
+        android:layout_marginBottom="@dimen/edittext_margin_top"
+
         app:layout_constraintTop_toBottomOf="@id/hgl_0.05"
         app:layout_constraintBottom_toTopOf="@id/hgl_0.25"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
@@ -72,44 +92,52 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/tv_my_username"
         android:text="用户名"
-        android:gravity="left"
+        android:gravity="center_vertical|left"
         android:textSize="28dp"
 
-        app:layout_constraintLeft_toRightOf="@id/vgl_0.75"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_my_userimage"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-        app:layout_constraintTop_toBottomOf="@id/hgl_0.05"
         app:layout_constraintBottom_toTopOf="@id/tv_my_userdescription"
         />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:id="@+id/tv_my_userdescription"
-        android:text="个性签名"
-        android:gravity="left"
-        app:layout_constraintLeft_toRightOf="@+id/vgl_0.75"
-        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
-        app:layout_constraintTop_toBottomOf="@id/tv_my_username"
-        app:layout_constraintBottom_toTopOf="@id/hgl_0.25"
+        android:text="开始今天的打卡吧~"
+        android:gravity="center_vertical|left"
 
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_my_userimage"
+        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
+        app:layout_constraintBottom_toTopOf="@id/hgl_0.2"
         />
+
+
+
+
 
     <TextView
         android:id="@+id/tv_my_password_change"
         android:layout_width="0dp"
         android:layout_height="@dimen/edittext_height"
 
-        android:layout_marginTop="160dp"
-        android:layout_marginBottom="@dimen/item_interval"
-        android:drawableLeft="@drawable/ic_date_range_black_24dp"
+        android:drawableLeft="@drawable/ic_settings_black_24dp"
+        android:drawableRight="@drawable/ic_chevron_right_black_24dp"
         android:drawablePadding="10dp"
-        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/drawable_padding_left"
+        android:paddingRight="@dimen/drawable_padding_right"
+        android:background="@color/bgLightYellow"
+        android:textSize="@dimen/item_manage_textsize"
+        android:gravity="center_vertical|left"
+
         android:text="修改密码"
 
-        android:textSize="@dimen/item_manage_textsize"
         app:layout_constraintBottom_toTopOf="@id/tv_my_usergroup"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
@@ -117,55 +145,91 @@
         app:layout_constraintTop_toTopOf="@+id/hgl_0.25"
         app:layout_constraintVertical_chainStyle="spread" />
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/lightgrey"
+        android:id="@+id/view_my_01"
+        app:layout_constraintTop_toBottomOf="@id/tv_my_password_change"
+        app:layout_constraintLeft_toLeftOf="@id/vgl_0.05"
+        app:layout_constraintRight_toRightOf="@id/vgl_0.95"
+        />
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="@dimen/edittext_height"
-        android:layout_marginBottom="@dimen/item_interval"
-        android:drawableLeft="@drawable/ic_settings_black_24dp"
+        android:drawableLeft="@drawable/ic_person_black_24dp"
         android:drawablePadding="10dp"
-        android:text="我的圈子"
+
+        android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+        android:paddingLeft="@dimen/drawable_padding_left"
+        android:paddingRight="@dimen/drawable_padding_right"
+        android:background="@color/bgLightYellow"
         android:textSize="@dimen/item_manage_textsize"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|left"
+        android:text="我的圈子"
         android:id="@+id/tv_my_usergroup"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_my_password_change"
-        app:layout_constraintBottom_toTopOf="@id/tv_my_settings"
+        app:layout_constraintTop_toBottomOf="@id/view_my_01"
+        app:layout_constraintBottom_toTopOf="@id/view_my_02"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         />
 
-    <TextView
+    <View
         android:layout_width="0dp"
-        android:layout_height="@dimen/edittext_height"
-        android:layout_marginBottom="@dimen/item_interval"
-        android:drawableLeft="@drawable/ic_group_add_black_24dp"
-        android:drawablePadding="10dp"
-        android:text="更多设置"
-        android:textSize="@dimen/item_manage_textsize"
-        android:gravity="center_vertical"
-
-        android:id="@+id/tv_my_settings"
-
+        android:layout_height="0.5dp"
+        android:background="@color/lightgrey"
+        android:id="@+id/view_my_02"
         app:layout_constraintTop_toBottomOf="@id/tv_my_usergroup"
-        app:layout_constraintBottom_toTopOf="@id/tv_my_seedback"
-        app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
-        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
+        app:layout_constraintLeft_toLeftOf="@id/vgl_0.05"
+        app:layout_constraintRight_toRightOf="@id/vgl_0.95"
         />
+
+
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="@dimen/edittext_height"
         android:layout_marginBottom="@dimen/item_interval"
-        android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
-        android:drawablePadding="10dp"
-        android:text="意见反馈"
+        android:drawableLeft="@drawable/ic_description_black_24dp"
+        android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+        android:paddingLeft="@dimen/drawable_padding_left"
+        android:paddingRight="@dimen/drawable_padding_right"
+        android:background="@color/bgLightYellow"
         android:textSize="@dimen/item_manage_textsize"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|left"
+        android:drawablePadding="10dp"
+
+        android:text="意见反馈"
 
         android:id="@+id/tv_my_seedback"
 
-        app:layout_constraintTop_toBottomOf="@id/tv_my_settings"
-        app:layout_constraintBottom_toTopOf="@id/hgl_0.75"
+        app:layout_constraintTop_toBottomOf="@id/view_my_02"
+        app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
+        app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
+        />
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/edittext_height"
+        android:drawableLeft="@drawable/ic_exit_to_app_black_24dp"
+        android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+        android:paddingLeft="@dimen/drawable_padding_left"
+        android:paddingRight="@dimen/drawable_padding_right"
+        android:background="@color/bgLightYellow"
+        android:textSize="@dimen/item_manage_textsize"
+        android:gravity="center_vertical|left"
+        android:drawablePadding="10dp"
+
+        android:layout_marginTop="@dimen/edittext_margin_top"
+
+        android:text="退出登录"
+
+        android:id="@+id/tv_my_settings"
+
+        app:layout_constraintTop_toBottomOf="@id/tv_my_seedback"
         app:layout_constraintLeft_toRightOf="@id/vgl_0.05"
         app:layout_constraintRight_toLeftOf="@id/vgl_0.95"
         />

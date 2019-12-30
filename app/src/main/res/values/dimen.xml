@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="item_manage_textsize">26dp</dimen>
+    <dimen name="item_manage_textsize">18dp</dimen>
     <dimen name="item_interval_text">8dp</dimen>
     <dimen name="item_my_textsize">25dp</dimen>
     <dimen name="item_intro_label_textsize">15dp</dimen>
@@ -10,5 +10,18 @@
     <dimen name="edittext_height">48dp</dimen>
     <dimen name="corner_radius">10dp</dimen>
     <dimen name="item_interval">20dp</dimen>
+
+    <!--文本框左右两侧的小图标的padding-->
+    <dimen name="drawable_padding_left">10dp</dimen>
+    <dimen name="drawable_padding_right">5dp</dimen>
+
+    <!--文本输入框开始光标的padding-->
+    <dimen name="edittext_padding_left">10dp</dimen>
+
+    <!--两类item之间的间隔-->
+    <dimen name="edittext_margin_top">15dp</dimen>
+
+    <dimen name="intro_splitline">15dp</dimen>
+
 
 </resources>
