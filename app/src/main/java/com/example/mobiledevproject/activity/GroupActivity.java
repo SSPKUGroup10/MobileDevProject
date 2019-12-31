@@ -161,8 +161,9 @@ public class GroupActivity extends AppCompatActivity {
     //  判断是否在打卡时间内
     public boolean canCheckin() {
 
-        String time1 = "2019-12-12 00:10:10";
-        String time2 = "2019-12-12 23:10:10";
+        String time1 = group.getStartAt();
+        String time2 = group.getEndAt();
+
         String beginTime = time1.split(" ")[1];
         String []str1 = beginTime.split(":");
         if(str1[0].charAt(0) == '0')
@@ -182,7 +183,7 @@ public class GroupActivity extends AppCompatActivity {
 
         //current time
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("H:mm");
         String currentTime = dateFormat.format(date);
 
         System.out.println(beginTime);

@@ -252,6 +252,7 @@ public class CheckinActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 flag[0] = true;
                 String responseBody = response.body().string();
+                Log.i(TAG, "onResponse: "+responseBody);
                 JsonObject jsonObject = new JsonParser().parse(responseBody).getAsJsonObject();
 
                 System.out.println(jsonObject);

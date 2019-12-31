@@ -93,7 +93,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/tv_checkin_name"
-        android:text="圈子名称"
+        tools:text="圈子名称"
 
         android:textSize="20dp"
 
@@ -107,7 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/tv_checkin_membernum"
-        android:text="成员 5人 >"
+        android:text="成员 人 >"
 
         app:layout_constraintLeft_toRightOf="@id/vgl_0.44"
         app:layout_constraintRight_toLeftOf="@id/btn_joinin"
